@@ -43,6 +43,10 @@ public class Sessao implements Serializable{
 	
 	@OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL)
 	List<Ideia> ideias;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_grupo")
+	private Grupo grupo;
 
 	public Integer getId() {
 		return id;

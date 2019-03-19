@@ -61,6 +61,12 @@ public class User implements Serializable {
 	
 	@ManyToMany(mappedBy = "participantes")
 	private List<Sessao> sessoes;
+	
+	@ManyToMany(mappedBy = "participantes")
+	private List<Grupo> grupos;
+	
+	@OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL)
+	private List<Grupo> gruposAdministrados;
 
 	public Integer getId() {
 		return id;
@@ -134,6 +140,22 @@ public class User implements Serializable {
 		this.sessoes = sessoes;
 	}
 	
+	public List<Grupo> getGrupos() {
+		return grupos;
+	}
+
+	public void setGrupos(List<Grupo> grupos) {
+		this.grupos = grupos;
+	}
+
+	public List<Grupo> getGruposAdministrados() {
+		return gruposAdministrados;
+	}
+
+	public void setGruposAdministrados(List<Grupo> gruposAdministrados) {
+		this.gruposAdministrados = gruposAdministrados;
+	}
+
 	@Override
 	public String toString() {
 		return this.getName();
