@@ -41,4 +41,70 @@ public class Grupo implements Serializable{
 	private List <Sessao> sessoes;
 	
 	
+	
+	public Integer getId() {
+		return id;
+	}
+
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
+
+	public String getNome() {
+		return nome;
+	}
+
+
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+
+
+	public User getAdministrador() {
+		return administrador;
+	}
+
+
+
+	public void setAdministrador(User administrador) {
+		this.administrador = administrador;
+	}
+
+
+
+	public List<User> getParticipantes() {
+		return participantes;
+	}
+
+
+
+	public void setParticipantes(List<User> participantes) {
+		this.participantes = participantes;
+	}
+
+
+
+	public List<Sessao> getSessoes() {
+		return sessoes;
+	}
+
+
+
+	public void setSessoes(List<Sessao> sessoes) {
+		this.sessoes = sessoes;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return this.nome;
+	}
+	
 }
