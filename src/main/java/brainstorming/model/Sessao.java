@@ -33,13 +33,10 @@ public class Sessao implements Serializable{
 	@Column(name = "detalhes")
 	private String detalhes;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_moderador")
-	private User moderador;
-	
-	@ManyToMany
-	@JoinTable(name="usuario_sessao")
-	private List<User> participantes;
+//	@ManyToOne
+//	@JoinColumn(name = "id_moderador")
+//	private User moderador;
+//  Substituir por uma lista de moderadores (ManyToMany)
 	
 	@OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL)
 	List<Ideia> ideias;
@@ -71,22 +68,6 @@ public class Sessao implements Serializable{
 	public void setDetalhes(String detalhes) {
 		this.detalhes = detalhes;
 	}
-	
-	public User getModerador() {
-		return moderador;
-	}
-
-	public void setModerador(User moderador) {
-		this.moderador = moderador;
-	}
-
-	public List<User> getParticipantes() {
-		return participantes;
-	}
-
-	public void setParticipantes(List<User> participantes) {
-		this.participantes = participantes;
-	}
 
 	public List<Ideia> getIdeias() {
 		return ideias;
@@ -95,6 +76,15 @@ public class Sessao implements Serializable{
 	public void setIdeias(List<Ideia> ideias) {
 		this.ideias = ideias;
 	}
+
+	public Grupo getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(Grupo grupo) {
+		this.grupo = grupo;
+	}
+	
 	
 	
 	

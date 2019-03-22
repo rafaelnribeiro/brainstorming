@@ -31,14 +31,15 @@ public class SessaoService {
 		return sessaoRepository.save(entity);
 	}
 	
-	@Transactional(readOnly = false)
-	public Sessao addParticipante(Sessao entity, User participante) throws ParticipanteJaAdicionadoException {
-		if(entity.getParticipantes().contains(participante) || entity.getModerador().equals(participante)) {
-			throw new ParticipanteJaAdicionadoException();
-		}
-		entity.getParticipantes().add(participante);
-		return sessaoRepository.save(entity);
-	}
+//	@Transactional(readOnly = false)
+//	public Sessao addParticipante(Sessao entity, User participante) throws ParticipanteJaAdicionadoException {
+//		if(entity.getGrupo().getParticipantes().contains(participante)){
+//			throw new ParticipanteJaAdicionadoException();
+//		}
+//		entity.getGrupo().getParticipantes().add(participante);
+//		return sessaoRepository.save(entity);
+//	}
+// Remover e tratar exceção em GrupoService
 	
 	@Transactional(readOnly = false)
 	public void delete(Sessao entity) {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import brainstorming.model.Grupo;
+import brainstorming.model.User;
 import brainstorming.repository.GrupoRepository;
 
 @Service
@@ -33,5 +34,17 @@ public class GrupoService {
 	@Transactional(readOnly = false)
 	public void delete(Grupo entity) {
 		grupoRepository.delete(entity);
+	}
+	
+	@Transactional(readOnly = false)
+	public void addParticipante(Grupo entity, User participante){
+		entity.getParticipantes().add(participante);
+		grupoRepository.save(entity);
+	}
+	
+	@Transactional(readOnly = false)
+	public void rmvParticipante(Grupo entity, User participante){
+		entity.getParticipantes().remove(participante);
+		grupoRepository.save(entity);
 	}
 }

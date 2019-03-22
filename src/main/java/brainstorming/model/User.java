@@ -56,11 +56,9 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
 	List<Ideia> Ideias;
 	
-	@OneToMany(mappedBy = "moderador", cascade = CascadeType.ALL)
-	List<Sessao> sessoesModeradas;
-	
-	@ManyToMany(mappedBy = "participantes")
-	private List<Sessao> sessoes;
+//	@OneToMany(mappedBy = "moderador", cascade = CascadeType.ALL)
+//	List<Sessao> sessoesModeradas;
+//  Substituir por ManyToMany
 	
 	@ManyToMany(mappedBy = "participantes")
 	private List<Grupo> grupos;
@@ -122,22 +120,6 @@ public class User implements Serializable {
 
 	public void setIdeias(List<Ideia> ideias) {
 		Ideias = ideias;
-	}
-
-	public List<Sessao> getSessoesModeradas() {
-		return sessoesModeradas;
-	}
-
-	public void setSessoesModeradas(List<Sessao> sessoesModeradas) {
-		this.sessoesModeradas = sessoesModeradas;
-	}
-
-	public List<Sessao> getSessoes() {
-		return sessoes;
-	}
-
-	public void setSessoes(List<Sessao> sessoes) {
-		this.sessoes = sessoes;
 	}
 	
 	public List<Grupo> getGrupos() {

@@ -44,12 +44,9 @@ public class IdeiaController {
 		if(id != null) {
 			Ideia ideia = ideiaService.findOne(id).get();
 			User user = userService.findByEmail(principal.getName());
-			if(ideia.getSessao().getModerador().equals(user) ||
-							ideia.getSessao().getParticipantes().contains(user)) {
 				model.addAttribute("ideia", ideia);
 				model.addAttribute("ehAutor", ideia.getAutor().equals(user));
 				pagina_retorno = "ideia/show";
-			}
 		}
 		return pagina_retorno;
 	}
@@ -75,13 +72,11 @@ public class IdeiaController {
 			if(id_sessao != null){
 				Sessao sessao = sessaoService.findOne(id_sessao).get();
 				User user = userService.findByEmail(principal.getName());
-				if(sessao.getModerador().equals(user) || sessao.getParticipantes().contains(user)) {
 					entityIdeia.setSessao(sessao);
 					entityIdeia.setAutor(user);
 					Ideia ideia = ideiaService.save(entityIdeia);
 					redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_INSERT);
-					pagina_retorno = "redirect:/ideias/" + ideia.getId();
-				}			
+					pagina_retorno = "redirect:/ideias/" + ideia.getId();		
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,10 +99,10 @@ public class IdeiaController {
 				User user = userService.findByEmail(principal.getName());
 				Ideia ideia = ideiaService.findOne(id).get();
 				Sessao sessao = ideia.getSessao();
-				boolean ehModerador = sessao.getModerador().equals(user);
-				boolean ehParticipante = sessao.getParticipantes().contains(user);
+				boolean ehParticipante = sessao.getGrupo().getParticipantes().contains(user);
+				boolean ehAdmin = sessao.getGrupo().getAdministrador().getId().equals(user.getId());
 				boolean ehAutor = ideia.getAutor().equals(user);
-				if((ehModerador || ehParticipante) && ehAutor) {
+				if((ehParticipante || ehAdmin) && ehAutor) {
 					model.addAttribute("ideia", ideia);
 					model.addAttribute("id_sessao", sessao.getId());
 					pagina_retorno = "ideia/form";
@@ -130,10 +125,10 @@ public class IdeiaController {
 			Ideia ideia = ideiaService.findOne(entityIdeia.getId()).get();
 			Sessao sessao = ideia.getSessao();
 			User user = userService.findByEmail(principal.getName());				
-			boolean ehModerador = sessao.getModerador().equals(user);
-			boolean ehParticipante = sessao.getParticipantes().contains(user);
+			boolean ehParticipante = sessao.getGrupo().getParticipantes().contains(user);
+			boolean ehAdmin = sessao.getGrupo().getAdministrador().getId().equals(user.getId());
 			boolean ehAutor = ideia.getAutor().equals(user);
-			if((ehModerador || ehParticipante) && ehAutor) {
+			if((ehParticipante || ehAdmin) && ehAutor) {
 				entityIdeia.setSessao(ideia.getSessao());
 				entityIdeia.setAutor(ideia.getAutor());
 				ideiaService.save(entityIdeia);
@@ -161,10 +156,10 @@ public class IdeiaController {
 				User user = userService.findByEmail(principal.getName());
 				Ideia ideia = ideiaService.findOne(id).get();
 				Sessao sessao = ideia.getSessao();
-				boolean ehModerador = sessao.getModerador().equals(user);
-				boolean ehParticipante = sessao.getParticipantes().contains(user);
+				boolean ehParticipante = sessao.getGrupo().getParticipantes().contains(user);
+				boolean ehAdmin = sessao.getGrupo().getAdministrador().getId().equals(user.getId());
 				boolean ehAutor = ideia.getAutor().equals(user);
-				if((ehModerador || ehParticipante) && ehAutor) {
+				if((ehParticipante || ehAdmin) && ehAutor) {
 					ideiaService.delete(ideia);
 					redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_DELETE);
 					pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";
