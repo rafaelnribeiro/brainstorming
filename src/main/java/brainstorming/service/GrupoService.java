@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import brainstorming.model.Grupo;
 import brainstorming.model.User;
 import brainstorming.repository.GrupoRepository;
+import brainstorming.util.exceptions.BusinessException;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,7 +28,10 @@ public class GrupoService {
 	}
 	
 	@Transactional(readOnly = false)
-	public Grupo save(Grupo entity) {
+	public Grupo save(Grupo entity) throws BusinessException {
+		if (entity.getNome().trim().isEmpty()) {
+			throw new BusinessException("Nome do grupo vazio");
+		}
 		return grupoRepository.save(entity);
 	}
 	
@@ -37,7 +41,10 @@ public class GrupoService {
 	}
 	
 	@Transactional(readOnly = false)
-	public void addParticipante(Grupo entity, User participante){
+	public void addParticipante(Grupo entity, User participante) throws BusinessException{
+		if (entity.getParticipantes().contains(participante)) {
+			throw new BusinessException("Usuário já pertence ao grupo");
+		}
 		entity.getParticipantes().add(participante);
 		grupoRepository.save(entity);
 	}

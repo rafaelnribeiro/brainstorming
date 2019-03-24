@@ -15,10 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "user")
@@ -32,17 +28,12 @@ public class User implements Serializable {
 	private Integer id;
 	
 	@Column(name = "name")
-	@NotEmpty(message = "Por favor forneça seu nome")
 	private String name;
 	
 	@Column(name = "email")
-	@Email(message = "*Por favor forneça um email válido")
-	@NotEmpty(message = "*Por favor forneça um email")
 	private String email;
 	
 	@Column(name = "password")
-	@Length(min = 5, message = "*A senha deve possuir no mínimo 5 caracteres")
-	@NotEmpty(message = "*Por favor forneça sua senha")
 	private String password;
 	
 	@Column(name = "active")

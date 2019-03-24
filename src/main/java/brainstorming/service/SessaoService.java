@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import brainstorming.model.Sessao;
-import brainstorming.model.User;
 import brainstorming.repository.SessaoRepository;
 
 @Service
@@ -30,16 +29,6 @@ public class SessaoService {
 	public Sessao save(Sessao entity) {
 		return sessaoRepository.save(entity);
 	}
-	
-//	@Transactional(readOnly = false)
-//	public Sessao addParticipante(Sessao entity, User participante) throws ParticipanteJaAdicionadoException {
-//		if(entity.getGrupo().getParticipantes().contains(participante)){
-//			throw new ParticipanteJaAdicionadoException();
-//		}
-//		entity.getGrupo().getParticipantes().add(participante);
-//		return sessaoRepository.save(entity);
-//	}
-// Remover e tratar exceção em GrupoService
 	
 	@Transactional(readOnly = false)
 	public void delete(Sessao entity) {

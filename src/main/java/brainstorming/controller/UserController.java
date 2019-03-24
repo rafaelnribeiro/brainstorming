@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import brainstorming.model.User;
-import brainstorming.service.EmailJaCadastradoException;
 import brainstorming.service.UserService;
+import brainstorming.util.exceptions.BusinessException;
 
 @Controller
 @RequestMapping("/usuario")
@@ -31,27 +31,16 @@ public class UserController {
 	@PostMapping
 	public String cadastrar(@Valid @ModelAttribute User entityUsuario, BindingResult bidingResult
 							, RedirectAttributes redirectAttributes) {
-		String pagina_retorno = "redirect:/usuario/cadastro/";
+		String pagina_retorno;
 		try {
 			usuarioService.save(entityUsuario);
-			redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_REGISTER);
+			redirectAttributes.addFlashAttribute("success", "Cadastro realizado com sucesso");
 			pagina_retorno = "redirect:/login/";
-		
-		} catch (EmailJaCadastradoException e) {
-			e.printStackTrace();
-			redirectAttributes.addFlashAttribute("error", MSG_ERROR_EMAIL);
-		} catch (Exception e) {
-			e.printStackTrace();
-			redirectAttributes.addFlashAttribute("error", MSG_ERROR_REGISTER);
-		} catch (Throwable e) {
-			e.printStackTrace();
-			redirectAttributes.addFlashAttribute("error", MSG_ERROR_REGISTER);
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			pagina_retorno = "redirect:/usuario/cadastro/";
 		}
 		
 		return pagina_retorno;
-	}
-	private static final String MSG_SUCCESS_REGISTER = "Cadastro Realizado com Sucesso.";
-	private static final String MSG_ERROR_REGISTER = "Erro ao Realizar Cadastro.";
-	private static final String MSG_ERROR_EMAIL = "Email já cadastrado.";
-	
+	}	
 }

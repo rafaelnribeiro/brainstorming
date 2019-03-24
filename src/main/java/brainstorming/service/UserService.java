@@ -14,6 +14,7 @@ import brainstorming.model.Role;
 import brainstorming.model.User;
 import brainstorming.repository.RoleRepository;
 import brainstorming.repository.UserRepository;
+import brainstorming.util.exceptions.BusinessException;
 
 @Service
 @Transactional(readOnly = true)
@@ -41,11 +42,10 @@ public class UserService {
 	}
 	
 	@Transactional(readOnly = false)
-	public User save(User entity) throws EmailJaCadastradoException {
+	public User save(User entity) throws BusinessException {
 		if(this.findByEmail(entity.getEmail()) != null) {
-			throw new EmailJaCadastradoException();
+			throw new BusinessException("Email já cadastrado");	
 		}
-		
 		entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
 		Role userRole = roleRepository.findByRole("USER");
 		entity.setRoles(new HashSet<Role>(Arrays.asList(userRole)));

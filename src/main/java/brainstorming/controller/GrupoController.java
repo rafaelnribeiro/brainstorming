@@ -22,6 +22,7 @@ import brainstorming.model.Sessao;
 import brainstorming.model.User;
 import brainstorming.service.GrupoService;
 import brainstorming.service.UserService;
+import brainstorming.util.exceptions.BusinessException;
 
 @Controller
 @RequestMapping("/grupos")
@@ -50,15 +51,17 @@ public class GrupoController {
 	@PostMapping
 	public String create(@Valid @ModelAttribute Grupo entityGrupo, Principal principal,
 						BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-		Grupo grupo = null;
-		String pagina_retorno = "redirect:/grupos/";
-		
+		String pagina_retorno;
 		User admin = userService.findByEmail(principal.getName());
 		entityGrupo.setAdministrador(admin);
-		grupo = grupoService.save(entityGrupo);
-		redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_INSERT);
-		pagina_retorno = pagina_retorno + grupo.getId() + "/sessoes";		
-		
+		try {
+			Grupo grupo = grupoService.save(entityGrupo);
+			redirectAttributes.addFlashAttribute("success", "Grupo criado com sucesso");
+			pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/sessoes";
+		}catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			pagina_retorno = "redirect:/grupos/new";
+		}		
 		return pagina_retorno;		
 	}
 	
@@ -75,7 +78,7 @@ public class GrupoController {
 		String pagina_retorno;
 		Grupo grupo = grupoService.findOne(id).get();
 		grupoService.delete(grupo);
-		redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_DELETE);
+		redirectAttributes.addFlashAttribute("success", "Grupo removico com sucesso");
 		pagina_retorno = "redirect:/grupos";
 		
 		return pagina_retorno;
@@ -84,19 +87,22 @@ public class GrupoController {
 	@PutMapping
 	public String update(@Valid @ModelAttribute Grupo entityGrupo, BindingResult result, 
 							RedirectAttributes redirectAttributes) {
-		String pagina_retorno;
+		String pagina_retorno;		
 		Grupo grupo = grupoService.findOne(entityGrupo.getId()).get();
 		grupo.setNome(entityGrupo.getNome());
-		grupoService.save(grupo);
-		redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_EDIT);
-		pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/sessoes";
-		
+		try {
+			grupoService.save(grupo);
+			redirectAttributes.addFlashAttribute("success", "Grupo modificado com sucesso");
+			pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/sessoes";
+		}catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/edit";
+		}
 		return pagina_retorno;
 	}
 	
 	@GetMapping("{id}/sessoes")
 	public String showSessoes(Model model, @PathVariable("id") Integer id, Principal principal) {
-		
 		String pagina_retorno;
 		User user = userService.findByEmail(principal.getName());
 		Grupo grupo = grupoService.findOne(id).get();
@@ -112,7 +118,7 @@ public class GrupoController {
 	
 	@GetMapping("/{id}/participantes")
 	public String showParticipantes(Model model, @PathVariable("id") Integer id, Principal principal) {
-		String pagina_retorno = "redirect:/acessoNegado";
+		String pagina_retorno;
 		User user = userService.findByEmail(principal.getName());
 		Grupo grupo = grupoService.findOne(id).get();	
 		boolean ehAdmin = grupo.getAdministrador().getId().equals(user.getId());
@@ -120,7 +126,7 @@ public class GrupoController {
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("participantes", participantes);
 		model.addAttribute("ehAdmin", ehAdmin);
-		pagina_retorno = "grupo/showParticipantes";
+		pagina_retorno = "grupo/showParticipantes";	
 		
 		return pagina_retorno;
 	}
@@ -141,10 +147,14 @@ public class GrupoController {
 		String pagina_retorno;
 		Grupo grupo = grupoService.findOne(id).get();
 		User participante = userService.findByEmail(email);
-		grupoService.addParticipante(grupo, participante);
-		redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_ADD_USER);
-		pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/participantes";
-				
+		try {
+			grupoService.addParticipante(grupo, participante);
+			redirectAttributes.addFlashAttribute("success", "Usuário adicionado com sucesso");
+			pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/participantes";
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/addParticipante";
+		}				
 		return pagina_retorno;
 	}
 	
@@ -155,16 +165,9 @@ public class GrupoController {
 		Grupo grupo = grupoService.findOne(id).get();
 		User participante = userService.findOne(id_participante).get();
 		grupoService.rmvParticipante(grupo, participante);
-		redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_RMV_USER);
+		redirectAttributes.addFlashAttribute("success", "Usuário Removido com Sucesso");
 		pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/participantes";
 		
 		return pagina_retorno;
 	}
-	
-
-	private static final String MSG_SUCCESS_INSERT = "Grupo criado com sucesso.";
-	private static final String MSG_SUCCESS_ADD_USER = "Usuário adicionado ao grupo.";
-	private static final String MSG_SUCCESS_RMV_USER = "Usuário Removido com Sucesso.";
-	private static final String MSG_SUCCESS_EDIT = "Grupo modificado com Sucesso.";
-	private static final String MSG_SUCCESS_DELETE = "Grupo Removido com Sucesso.";
 }

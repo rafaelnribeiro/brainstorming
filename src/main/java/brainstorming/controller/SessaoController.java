@@ -1,12 +1,10 @@
 package brainstorming.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,12 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import brainstorming.model.Grupo;
 import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
-import brainstorming.model.User;
 import brainstorming.service.GrupoService;
-import brainstorming.service.ParticipanteJaAdicionadoException;
 import brainstorming.service.SessaoService;
 import brainstorming.service.UserService;
-import brainstorming.service.UsuarioNaoEncontradoException;
 
 @Controller
 @RequestMapping("/sessoes")
@@ -72,7 +67,7 @@ public class SessaoController {
 		Grupo grupo = grupoService.findOne(id_grupo).get();
 		entitySessao.setGrupo(grupo);
 		sessao = sessaoService.save(entitySessao);
-		redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_INSERT);
+		redirectAttributes.addFlashAttribute("success", "Sessão adicionada com sucesso");
 		pagina_retorno = pagina_retorno + sessao.getId() + "/ideias";
 		
 		return pagina_retorno;
@@ -92,13 +87,13 @@ public class SessaoController {
 	@PutMapping
 	public String update(@Valid @ModelAttribute Sessao entitySessao, BindingResult result,
 						RedirectAttributes redirectAttributes) {
-		String pagina_retorno = "redirect:/acessoNegado";
+		String pagina_retorno;
 
 		Sessao sessao = sessaoService.findOne(entitySessao.getId()).get();
 		sessao.setDetalhes(entitySessao.getDetalhes());
 		sessao.setTema(entitySessao.getTema());
 		sessaoService.save(sessao);
-		redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_EDIT);
+		redirectAttributes.addFlashAttribute("success", "Sessão modificada com sucesso");
 		pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";
 		
 		return pagina_retorno;
@@ -110,22 +105,8 @@ public class SessaoController {
 		Sessao sessao = sessaoService.findOne(id).get();
 		Grupo grupo = sessao.getGrupo();
 		sessaoService.delete(sessao);
-		redirectAttributes.addFlashAttribute("success", MSG_SUCCESS_DELETE);
+		redirectAttributes.addFlashAttribute("success", "Sessão removida com sucesso");
 		pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/sessoes";
 		return pagina_retorno;
 	}
-	
-	
-	private static final String MSG_SUCCESS_INSERT = "Sessão Adicionada com Sucesso.";
-	private static final String MSG_ERROR_INSERT = "Erro ao adicionar Sessão.";
-	private static final String MSG_SUCCESS_EDIT = "Sessão Modificada com Sucesso.";
-	private static final String MSG_ERROR_EDIT = "Erro ao Modificar Sessão.";
-	private static final String MSG_SUCCESS_DELETE = "Sessão Removida com Sucesso.";
-	private static final String MSG_ERROR_DELETE = "Erro ao remover Sessão.";
-	private static final String MSG_SUCCESS_ADD_USER = "Usuário Adicionado à Sessão.";
-	private static final String MSG_ERROR_ADD_USER = "Erro ao adicionar Usuário.";
-	private static final String MSG_ERROR_FIND_USER = "Usuário não encontrado.";
-	private static final String MSG_ALREADY_ADDED_USER = "Usuário já Pertence à Sessão";
-	private static final String MSG_SUCCESS_RMV_USER = "Usuário Removido com Sucesso.";
-	private static final String MSG_ERROR_RMV_USER = "Erro ao Remover Usuário.";
 }
