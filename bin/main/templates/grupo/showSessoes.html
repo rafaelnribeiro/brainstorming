@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<title>Grupo</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div class='page-header'>
+			  <div class='btn-toolbar pull-right'>
+			    <div class='btn-group'>
+			    	<a th:href="@{/grupos/{id}/participantes(id = ${grupo.id})}" type="button" class="btn btn-default">Participantes</a>
+					<a th:if="${ehAdmin}" type='button' class='btn btn-default' th:href="@{/grupos/{id}/edit(id = ${grupo.id})}">Editar</a>
+				   	<a th:if="${ehAdmin}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvGrupoModel">Remover</a>
+					<div th:if="${ehAdmin}" class="modal fade" id="rmvGrupoModel" tabindex="-1" role="dialog" aria-labelledby="rmvGrupoModelLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="rmvGrupoModel">Confirmação</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					       Você realmente deseja remover o grupo?
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					        <a th:href="@{/grupos/{id}/delete(id = ${grupo.id})}" class="btn btn-primary">Sim</a>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+			    </div>
+			  </div>
+			  <h2 th:text="${grupo.nome}"></h2>
+			</div>
+							
+			<div class="form-group">
+				<label for="tema">Administrador: </label>
+				<span th:text="${grupo.administrador.name}"></span>
+			</div>
+			<div class="form-group">
+				<label for="detalhes">Sessoes: </label>
+			</div>			
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Tema</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="sessao : ${sessoes}">
+						<td th:text="${sessao.tema}"></td>
+						<td class="text-right">
+							<a th:href="@{/sessoes/{id}/ideias(id = ${sessao.id})}" class="btn btn-primary">Exibir</a>
+						</td>
+					</tr>					
+				</tbody>
+			</table>
+			<div class="form-group">
+				<a th:href="@{/sessoes/new?id_grupo={id}(id = ${grupo.id})}" class="btn btn-success">Nova Sessão</a>
+			</div>
+		</div>
+	</body>
+</html>
