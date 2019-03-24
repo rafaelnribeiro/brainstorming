@@ -122,8 +122,11 @@ public class GrupoController {
 		User user = userService.findByEmail(principal.getName());
 		Grupo grupo = grupoService.findOne(id).get();	
 		boolean ehAdmin = grupo.getAdministrador().getId().equals(user.getId());
+		List<User> moderadores = grupo.getModeradores();
 		List<User> participantes = grupo.getParticipantes();
+		participantes.removeAll(moderadores);
 		model.addAttribute("grupo", grupo);
+		model.addAttribute("moderadores", moderadores);
 		model.addAttribute("participantes", participantes);
 		model.addAttribute("ehAdmin", ehAdmin);
 		pagina_retorno = "grupo/showParticipantes";	
@@ -159,7 +162,7 @@ public class GrupoController {
 	}
 	
 	@GetMapping("/{id}/rmvParticipante/{id_participante}")
-	public String rmbParticipante(@PathVariable("id") Integer id, @PathVariable("id_participante")
+	public String rmvParticipante(@PathVariable("id") Integer id, @PathVariable("id_participante")
 									Integer id_participante, RedirectAttributes redirectAttributes) {
 		String pagina_retorno;
 		Grupo grupo = grupoService.findOne(id).get();
@@ -170,4 +173,35 @@ public class GrupoController {
 		
 		return pagina_retorno;
 	}
+	
+	@GetMapping("/{id}/addModerador/{id_moderador}")
+	public String addModerador(@PathVariable("id") Integer id, @PathVariable("id_moderador")
+									Integer id_moderador, RedirectAttributes redirectAttributes) {
+		String pagina_retorno;
+		Grupo grupo = grupoService.findOne(id).get();
+		User moderador = userService.findOne(id_moderador).get();
+		grupoService.addModerador(grupo, moderador);
+		redirectAttributes.addFlashAttribute("success", "Participante foi promovido para moderador");
+		pagina_retorno = "redirect:/grupos/" + grupo.getId() +"/participantes";
+		
+		return pagina_retorno;
+	}
+	
+	@GetMapping("/{id}/rmvModerador/{id_moderador}")
+	public String rmvModerador(@PathVariable("id") Integer id, @PathVariable("id_moderador")
+								Integer id_moderador, RedirectAttributes redirectAttributes) {
+		String pagina_retorno;
+		Grupo grupo = grupoService.findOne(id).get();
+		User moderador = userService.findOne(id_moderador).get();
+		grupoService.rmvModerador(grupo, moderador);
+		redirectAttributes.addFlashAttribute("success", "Moderador foi rebaixado para apenas participante");
+		pagina_retorno = "redirect:/grupos/" + grupo.getId() +"/participantes";
+		
+		return pagina_retorno;
+	}
 }
+
+
+
+
+

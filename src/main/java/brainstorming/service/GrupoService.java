@@ -51,7 +51,20 @@ public class GrupoService {
 	
 	@Transactional(readOnly = false)
 	public void rmvParticipante(Grupo entity, User participante){
+		entity.getModeradores().remove(participante);
 		entity.getParticipantes().remove(participante);
+		grupoRepository.save(entity);
+	}
+	
+	@Transactional(readOnly = false)
+	public void addModerador(Grupo entity, User moderador) {
+		entity.getModeradores().add(moderador);
+		grupoRepository.save(entity);
+	}
+	
+	@Transactional(readOnly = false)
+	public void rmvModerador(Grupo entity, User moderador) {
+		entity.getModeradores().remove(moderador);
 		grupoRepository.save(entity);
 	}
 }

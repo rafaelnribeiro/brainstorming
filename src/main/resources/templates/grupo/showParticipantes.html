@@ -52,19 +52,54 @@
 					<tr>
 						<th>Nome</th>
 						<th>Email</th>
+						<th>Tipo</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td th:text="${grupo.administrador.name}"></td>
 						<td th:text="${grupo.administrador.email}"></td>
+						<td>Administrador</td>
 						<td></td>
+					</tr>
+					<tr th:each="user : ${moderadores}">
+						<td th:text="${user.name}"></td>
+						<td th:text="${user.email}"></td>
+						<td>Modearador</td>
+						<td class="text-right">
+						<a th:if="${ehAdmin}" th:href="@{/grupos/{id}/rmvModerador/{id_moderador}
+											(id = ${grupo.id}, id_moderador = ${user.id})}">Rebaixar</a>
+							<a th:if="${ehAdmin}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvParticipanteModal">Remover</a>
+							<div th:if="${ehAdmin}" class="modal fade text-left" id="rmvParticipanteModal" tabindex="-1" role="dialog" aria-labelledby="rmvParticipanteModelLabel" aria-hidden="true">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="rmvParticipanteModal">Confirmação</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+							       O participante selecionado é um moderador, deseja realmente excluí-lo?
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+							        <a class="btn btn-primary" th:href="@{/grupos/{id}/rmvParticipante/{id_participante}
+							        			(id = ${grupo.id}, id_participante = ${user.id})}">Sim</a>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+					   </td>
 					</tr>
 					<tr th:each="user : ${participantes}">
 						<td th:text="${user.name}"></td>
 						<td th:text="${user.email}"></td>
+						<td>Participante</td>
 						<td class="text-right">
-							<a th:if="${ehAdmin}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvParticipanteModal">Remover Participante</a>
+						<a th:if="${ehAdmin}" th:href="@{/grupos/{id}/addModerador/{id_participante}
+											(id = ${grupo.id}, id_participante = ${user.id})}">Promover</a>
+							<a th:if="${ehAdmin}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvParticipanteModal">Remover</a>
 							<div th:if="${ehAdmin}" class="modal fade text-left" id="rmvParticipanteModal" tabindex="-1" role="dialog" aria-labelledby="rmvParticipanteModelLabel" aria-hidden="true">
 							  <div class="modal-dialog" role="document">
 							    <div class="modal-content">

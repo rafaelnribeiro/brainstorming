@@ -47,12 +47,11 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
 	List<Ideia> Ideias;
 	
-//	@OneToMany(mappedBy = "moderador", cascade = CascadeType.ALL)
-//	List<Sessao> sessoesModeradas;
-//  Substituir por ManyToMany
-	
 	@ManyToMany(mappedBy = "participantes")
 	private List<Grupo> grupos;
+	
+	@ManyToMany(mappedBy = "moderadores")
+	private List<Grupo> gruposModerados;
 	
 	@OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL)
 	private List<Grupo> gruposAdministrados;
