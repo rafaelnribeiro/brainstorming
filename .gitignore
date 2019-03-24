@@ -1,4 +1,16 @@
 /.gradle/
 /build/
 
-/bin/main/brainstorming
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
