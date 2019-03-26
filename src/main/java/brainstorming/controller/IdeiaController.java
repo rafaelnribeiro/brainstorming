@@ -20,9 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
 import brainstorming.model.User;
+import brainstorming.model.Voto;
 import brainstorming.service.IdeiaService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.UserService;
+import brainstorming.service.VotoService;
+import brainstorming.util.exceptions.BusinessException;
 
 @Controller
 @RequestMapping("/ideias")
@@ -36,6 +39,9 @@ public class IdeiaController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private VotoService votoService;
 	
 	@GetMapping("/{id}")
 	public String show(Model model,  @PathVariable("id") Integer id, Principal principal) {
@@ -111,5 +117,32 @@ public class IdeiaController {
 		pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";
 		
 		return pagina_retorno;
+	}
+	
+	@RequestMapping("/{id}/vote")
+	public String vote(Model model, @PathVariable("id") Integer id, Principal principal, RedirectAttributes redirectAttributes) {
+		String pagina_retorno;
+		model.addAttribute("id_ideia", id);
+		pagina_retorno = "ideias/votar";
+		return pagina_retorno;	
+		
+	}
+	
+	@PostMapping
+	public String votar(@Valid @ModelAttribute Voto voto, @RequestParam("id_ideia") 
+		Integer id_ideia, Principal principal, BindingResult result, RedirectAttributes redirectAttributes) {
+		
+		User user = userService.findByEmail(principal.getName());
+		Ideia ideia = ideiaService.findOne(id_ideia).get();
+		voto.setVotante(user);
+		voto.setIdeia(ideia);
+		
+		try {
+			votoService.save(voto);
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+		}  
+		
+		return null;
 	}
 }
