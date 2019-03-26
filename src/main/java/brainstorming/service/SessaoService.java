@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import brainstorming.model.Sessao;
 import brainstorming.repository.SessaoRepository;
+import brainstorming.util.exceptions.BusinessException;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,7 +26,17 @@ public class SessaoService {
 	}
 	
 	@Transactional(readOnly = false)
-	public Sessao save(Sessao entity) {
+	public Sessao save(Sessao entity) throws BusinessException {
+		List<Sessao> list_sessao = sessaoRepository.findAll();
+		for (Sessao sessao: list_sessao) {
+			if(sessao.getTema() == entity.getTema()) {
+				throw new BusinessException("Já existe uma sessão com esse tema");
+			}
+		}
+		
+		/*if (condition) {
+			
+		}*/
 		return sessaoRepository.save(entity);
 	}
 	

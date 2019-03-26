@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title th:if="${ideia.id == null}">Nova Ideia</title>
+<title th:if="${ideia.id != null}">Editar Ideia</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1 th:if="${ideia.id == null}">Nova Ideia</h1>
+		<h1 th:if="${ideia.id } != null">Editar Ideia</h1>
+		<hr />
+		
+		<form th:action="@{/ideias}"
+			th:method="@{${ideia.id == null} ? 'post' : 'put'}">
+			<input type="hidden" th:field="${ideia.id}"/>
+			
+			<div class="form-group">
+				<label for="titulo">Título</label> <input id="titulo" name="titulo"
+					type="text" class="form-control" th:field="${ideia.titulo}"/>
+			</div>
+			
+			<div class="form-group">
+				<label for="descricao">Descrição</label> <textarea id="descricao" name="descricao"
+					rows="7" class="form-control" th:field="${ideia.descricao}"></textarea>
+			</div>
+			
+			<input id="id_sessao" name="id_sessao" type="hidden" th:value="${id_sessao}">
+			
+			<button type="submit" class="btn btn-success">Salvar</button>
+			<a th:href="@{/sessoes/{id}/ideias(id = ${id_sessao})}" class="btn btn-default">Cancelar</a>						
+		</form>
+	</div>
+</body>
+</html>

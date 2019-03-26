@@ -32,6 +32,12 @@ public class GrupoService {
 		if (entity.getNome().trim().isEmpty()) {
 			throw new BusinessException("Nome do grupo vazio");
 		}
+		List<Grupo> list_grupo = grupoRepository.findAll();
+		for (Grupo grupo : list_grupo) {
+			if (grupo.getNome() == entity.getNome()) {
+				throw new BusinessException("Nome do grupo já existe");
+			}
+		}
 		return grupoRepository.save(entity);
 	}
 	
@@ -53,6 +59,8 @@ public class GrupoService {
 	public void rmvParticipante(Grupo entity, User participante){
 		entity.getModeradores().remove(participante);
 		entity.getParticipantes().remove(participante);
+		
+		
 		grupoRepository.save(entity);
 	}
 	

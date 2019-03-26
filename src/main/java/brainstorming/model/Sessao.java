@@ -30,6 +30,9 @@ public class Sessao implements Serializable{
 	@Column(name = "detalhes")
 	private String detalhes;
 	
+	@Column(name = "limite_ideias")
+	private Integer limite_ideias;
+	
 	@OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL)
 	private List<Ideia> ideias;
 	
@@ -76,6 +79,16 @@ public class Sessao implements Serializable{
 	public void setGrupo(Grupo grupo) {
 		this.grupo = grupo;
 	}
+
+	public Integer getLimite_ideias() {
+		return limite_ideias;
+	}
+
+	public void setLimite_ideias(Integer limite_ideias) {
+		this.limite_ideias = limite_ideias;
+	}
+	
+	
 	
 	
 	

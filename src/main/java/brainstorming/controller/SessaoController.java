@@ -24,6 +24,7 @@ import brainstorming.model.Sessao;
 import brainstorming.service.GrupoService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.UserService;
+import brainstorming.util.exceptions.BusinessException;
 
 @Controller
 @RequestMapping("/sessoes")
@@ -66,9 +67,15 @@ public class SessaoController {
 		
 		Grupo grupo = grupoService.findOne(id_grupo).get();
 		entitySessao.setGrupo(grupo);
-		sessao = sessaoService.save(entitySessao);
-		redirectAttributes.addFlashAttribute("success", "Sessão adicionada com sucesso");
-		pagina_retorno = pagina_retorno + sessao.getId() + "/ideias";
+		try {
+			sessao = sessaoService.save(entitySessao);
+			redirectAttributes.addFlashAttribute("success", "Sessão adicionada com sucesso");
+			pagina_retorno = pagina_retorno + sessao.getId() + "/ideias";
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			pagina_retorno = "redirect:/sessoes";
+		}
+		
 		
 		return pagina_retorno;
 	}
@@ -92,10 +99,15 @@ public class SessaoController {
 		Sessao sessao = sessaoService.findOne(entitySessao.getId()).get();
 		sessao.setDetalhes(entitySessao.getDetalhes());
 		sessao.setTema(entitySessao.getTema());
-		sessaoService.save(sessao);
-		redirectAttributes.addFlashAttribute("success", "Sessão modificada com sucesso");
-		pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";
-		
+		try {
+			sessao = sessaoService.save(entitySessao);
+			redirectAttributes.addFlashAttribute("success", "Sessão atualizada com sucesso");
+			pagina_retorno = "redirect:/sessoes" + sessao.getId() + "/ideias";
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			pagina_retorno = "redirect:/sessoes";
+		}
+				
 		return pagina_retorno;
 	}
 	

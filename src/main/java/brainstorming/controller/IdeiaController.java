@@ -72,9 +72,16 @@ public class IdeiaController {
 		User user = userService.findByEmail(principal.getName());
 		entityIdeia.setSessao(sessao);
 		entityIdeia.setAutor(user);
-		Ideia ideia = ideiaService.save(entityIdeia);
-		redirectAttributes.addFlashAttribute("success", "Ideia criada com sucesso");
-		pagina_retorno = "redirect:/ideias/" + ideia.getId();
+		Ideia ideia;
+		try {
+			ideia = ideiaService.save(entityIdeia);
+			redirectAttributes.addFlashAttribute("success", "Ideia criada com sucesso");
+			pagina_retorno = "redirect:/ideias/" + ideia.getId();
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			pagina_retorno = "redirect:/ideias";
+		}
+		
 		
 		return pagina_retorno;
 	}
@@ -99,10 +106,15 @@ public class IdeiaController {
 		Ideia ideia = ideiaService.findOne(entityIdeia.getId()).get();	
 		entityIdeia.setSessao(ideia.getSessao());
 		entityIdeia.setAutor(ideia.getAutor());
-		ideiaService.save(entityIdeia);
-		redirectAttributes.addFlashAttribute("success", "Ideia modificada com sucesso");
-		pagina_retorno = "redirect:/ideias/" + ideia.getId();
-
+		try {
+			ideia = ideiaService.save(entityIdeia);
+			redirectAttributes.addFlashAttribute("success", "Ideia atualizada com sucesso");
+			pagina_retorno = "redirect:/ideias/" + ideia.getId();
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			pagina_retorno = "redirect:/ideias";
+		}
+		
 		return pagina_retorno;
 	}
 	
@@ -132,6 +144,7 @@ public class IdeiaController {
 	public String votar(@Valid @ModelAttribute Voto voto, @RequestParam("id_ideia") 
 		Integer id_ideia, Principal principal, BindingResult result, RedirectAttributes redirectAttributes) {
 		
+		String pagina_retorno;
 		User user = userService.findByEmail(principal.getName());
 		Ideia ideia = ideiaService.findOne(id_ideia).get();
 		voto.setVotante(user);
@@ -141,8 +154,11 @@ public class IdeiaController {
 			votoService.save(voto);
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
-		}  
+		}
 		
-		return null;
+		pagina_retorno = "ideias/"+id_ideia;
+		
+		
+		return pagina_retorno;
 	}
 }

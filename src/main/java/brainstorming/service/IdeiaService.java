@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import brainstorming.model.Ideia;
 import brainstorming.repository.IdeiaRepository;
+import brainstorming.util.exceptions.BusinessException;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,7 +27,19 @@ public class IdeiaService {
 	}
 	
 	@Transactional(readOnly = false)
-	public Ideia save(Ideia entity) {
+	public Ideia save(Ideia entity) throws BusinessException {
+		if (entity.getTitulo().trim().isEmpty()) {
+			throw new BusinessException("Titulo vazio");
+		}
+		
+		List<Ideia> list_ideias = ideiaRepository.findAll();
+		for (Ideia ideia : list_ideias) {
+			if(ideia.getTitulo() == entity.getTitulo()) {
+				throw new BusinessException("Já existe uma ideia com esse titulo");
+			}
+		}
+		
+		
 		return ideiaRepository.save(entity);
 	}
 	
