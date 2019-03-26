@@ -31,7 +31,7 @@ public class Ideia implements Serializable{
 	private String descricao;
 	
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "id_usuario")
 	private User autor;
 	
 	@ManyToOne

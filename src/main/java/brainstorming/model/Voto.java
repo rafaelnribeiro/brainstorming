@@ -13,28 +13,28 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity 
-@Table(name = "Voto")
+@Table(name = "voto")
 public class Voto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
+	private Integer id;
 	
 	@Column(name = "comentario")
-	String comentario;
+	private String comentario;
 	
 	@Column(name = "tipo")
-	boolean tipo;
+	private boolean tipo;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
-	User votante;
+	private User votante;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_ideia")
-	Ideia ideia;
+	private Ideia ideia;
 	
 	
 	

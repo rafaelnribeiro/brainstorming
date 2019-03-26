@@ -25,9 +25,7 @@ public class User implements Serializable {
 	@Id
 	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
-	
-	
+	private Integer id;	
 	
 	@Column(name = "name")
 	private String name;
@@ -47,7 +45,7 @@ public class User implements Serializable {
 	private Set<Role> roles;
 	
 	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
-	List<Ideia> Ideias;
+	private List<Ideia> Ideias;
 	
 	@ManyToMany(mappedBy = "participantes")
 	private List<Grupo> grupos;
@@ -58,8 +56,8 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL)
 	private List<Grupo> gruposAdministrados;
 	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-	Voto voto;
+	@OneToMany(mappedBy = "votante", cascade = CascadeType.ALL)
+	private List<Voto> votos;
 
 	public Integer getId() {
 		return id;

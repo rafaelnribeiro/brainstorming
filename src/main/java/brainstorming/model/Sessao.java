@@ -30,13 +30,8 @@ public class Sessao implements Serializable{
 	@Column(name = "detalhes")
 	private String detalhes;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "id_moderador")
-//	private User moderador;
-//  Substituir por uma lista de moderadores (ManyToMany)
-	
 	@OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL)
-	List<Ideia> ideias;
+	private List<Ideia> ideias;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_grupo")
