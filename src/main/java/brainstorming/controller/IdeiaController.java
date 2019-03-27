@@ -1,8 +1,7 @@
 package brainstorming.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.validation.Valid;
 
@@ -43,7 +42,7 @@ public class IdeiaController {
 	private UserService userService;
 	
 	@Autowired
-	private ComentarioService votoService;
+	private ComentarioService comentarioService;
 	
 	@GetMapping("/{id}")
 	public String show(Model model,  @PathVariable("id") Integer id, Principal principal) {
@@ -163,4 +162,28 @@ public class IdeiaController {
 		return "redirect:/ideias/" + ideia.getId();	
 	}
 	
+	@RequestMapping("/{id}/comment")
+	public String comment(Model model, @PathVariable("id") Integer id, @ModelAttribute Comentario comment) {
+		return "/ideia/comente";
+	}
+	
+	@PostMapping("/{id}/comment")
+	public String comment( @PathVariable("id") Integer id, @Valid @ModelAttribute Comentario comment, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+		Ideia ideia = ideiaService.findOne(id).get();
+		User user = userService.findByEmail(principal.getName());
+		comment.setAutor(user);
+		comment.setIdeia(ideia);
+		
+		try {
+			comentarioService.save(comment);			
+			redirectAttributes.addFlashAttribute("success", "Comentario adicionado com sucesso");
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+		}
+		
+				
+		return "redirect:/ideias/"+id;
+		
+		
+	}
 }
