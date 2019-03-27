@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -39,7 +41,11 @@ public class Ideia implements Serializable{
 	private Sessao sessao;
 	
 	@OneToMany(mappedBy = "ideia", cascade = CascadeType.ALL)
-	List<Voto> votos;
+	private List<Comentario> comentarios;
+	
+	@ManyToMany
+	@JoinTable(name="votante_ideia")
+	private List<User> votantes;
 
 	public Integer getId() {
 		return id;
@@ -80,4 +86,21 @@ public class Ideia implements Serializable{
 	public void setSessao(Sessao sessao) {
 		this.sessao = sessao;
 	}
+
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
+	public List<User> getVotantes() {
+		return votantes;
+	}
+
+	public void setVotantes(List<User> votantes) {
+		this.votantes = votantes;
+	}
+	
 }

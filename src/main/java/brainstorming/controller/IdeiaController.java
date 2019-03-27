@@ -1,6 +1,8 @@
 package brainstorming.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -20,11 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
 import brainstorming.model.User;
-import brainstorming.model.Voto;
+import brainstorming.model.Comentario;
 import brainstorming.service.IdeiaService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.UserService;
-import brainstorming.service.VotoService;
+import brainstorming.service.ComentarioService;
 import brainstorming.util.exceptions.BusinessException;
 
 @Controller
@@ -41,7 +43,7 @@ public class IdeiaController {
 	private UserService userService;
 	
 	@Autowired
-	private VotoService votoService;
+	private ComentarioService votoService;
 	
 	@GetMapping("/{id}")
 	public String show(Model model,  @PathVariable("id") Integer id, Principal principal) {
@@ -50,6 +52,8 @@ public class IdeiaController {
 		User user = userService.findByEmail(principal.getName());
 		model.addAttribute("ideia", ideia);
 		model.addAttribute("ehAutor", ideia.getAutor().equals(user));
+		model.addAttribute("ehVotante", ideia.getVotantes().contains(user));
+		model.addAttribute("numVotos", ideia.getVotantes().size());
 		pagina_retorno = "ideia/show";
 		
 		return pagina_retorno;
@@ -132,33 +136,31 @@ public class IdeiaController {
 	}
 	
 	@RequestMapping("/{id}/vote")
-	public String vote(Model model, @PathVariable("id") Integer id, Principal principal, RedirectAttributes redirectAttributes) {
-		String pagina_retorno;
-		model.addAttribute("id_ideia", id);
-		pagina_retorno = "ideias/votar";
-		return pagina_retorno;	
-		
+	public String vote(Model model, @PathVariable("id") Integer id, Principal principal,
+							RedirectAttributes redirectAttributes) {
+		User votante = userService.findByEmail(principal.getName());
+		Ideia ideia = ideiaService.findOne(id).get();
+		try {
+			ideiaService.vote(ideia, votante);
+			redirectAttributes.addFlashAttribute("success",	"Voto realizado com sucesso"); 
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage()); 
+		}
+		return "redirect:/ideias/" + ideia.getId();	
 	}
 	
-	@PostMapping
-	public String votar(@Valid @ModelAttribute Voto voto, @RequestParam("id_ideia") 
-		Integer id_ideia, Principal principal, BindingResult result, RedirectAttributes redirectAttributes) {
-		
-		String pagina_retorno;
-		User user = userService.findByEmail(principal.getName());
-		Ideia ideia = ideiaService.findOne(id_ideia).get();
-		voto.setVotante(user);
-		voto.setIdeia(ideia);
-		
+	@RequestMapping("/{id}/unvote")
+	public String unvote(Model model, @PathVariable("id") Integer id, Principal principal,
+							RedirectAttributes redirectAttributes) {
+		User votante = userService.findByEmail(principal.getName());
+		Ideia ideia = ideiaService.findOne(id).get();
 		try {
-			votoService.save(voto);
+			ideiaService.unvote(ideia, votante);
+			redirectAttributes.addFlashAttribute("success",	"Voto cancelado com sucesso"); 
 		} catch (BusinessException e) {
-			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			redirectAttributes.addFlashAttribute("error", e.getMessage()); 
 		}
-		
-		pagina_retorno = "ideias/"+id_ideia;
-		
-		
-		return pagina_retorno;
+		return "redirect:/ideias/" + ideia.getId();	
 	}
+	
 }

@@ -8,33 +8,33 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title th:if="${ideia.id == null}">Nova Ideia</title>
-<title th:if="${ideia.id != null}">Editar Ideia</title>
+<title>Votar</title>
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1 th:if="${ideia.id == null}">Nova Ideia</h1>
-		<h1 th:if="${ideia.id } != null">Editar Ideia</h1>
+		<h1>Votar</h1>
 		<hr />
 		
-		<form th:action="@{/ideias}"
-			th:method="@{${ideia.id == null} ? 'post' : 'put'}">
-			<input type="hidden" th:field="${ideia.id}"/>
+		<form th:action="@{/ideias/{id}/vote(id = ${id_ideia})}" th:method="post" th:object="${voto}">
+			<input type="hidden" th:field="*{id}"/>
 			
 			<div class="form-group">
-				<label for="titulo">Título</label> <input id="titulo" name="titulo"
-					type="text" class="form-control" th:field="${ideia.titulo}"/>
+			<ul>
+			  			
+			  <li th:each="tipo : ${tipos}">
+    			<input type="radio" th:field="*{tipo}" th:value="${tipo}" />
+   				 <label th:for="${#ids.prev('tipo')}" th:text="${tipo}"></label>
+ 			 </li>
+ 			 </ul>
 			</div>
-			
+					
 			<div class="form-group">
-				<label for="descricao">Descrição</label> <textarea id="descricao" name="descricao"
-					rows="7" class="form-control" th:field="${ideia.descricao}"></textarea>
+				<label for="comentario">Comentário</label> <textarea id="comentario" name="comentario"
+					rows="7" class="form-control" th:field="*{comentario}"></textarea>
 			</div>
-			
-			<input id="id_sessao" name="id_sessao" type="hidden" th:value="${id_sessao}">
 			
 			<button type="submit" class="btn btn-success">Salvar</button>
-			<a th:href="@{/sessoes/{id}/ideias(id = ${id_sessao})}" class="btn btn-default">Cancelar</a>						
+			<a th:href="@{/ideias/{id}(id = ${id_ideia})}" class="btn btn-default">Cancelar</a>						
 		</form>
 	</div>
 </body>

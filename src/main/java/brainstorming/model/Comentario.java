@@ -11,8 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity 
-@Table(name = "voto")
-public class Voto implements Serializable{
+@Table(name = "comentario")
+public class Comentario implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -20,15 +20,12 @@ public class Voto implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "comentario")
-	private String comentario;
-	
-	@Column(name = "tipo")
-	private boolean tipo;
+	@Column(name = "texto")
+	private String texto;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
-	private User votante;
+	private User autor;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_ideia")
@@ -42,28 +39,20 @@ public class Voto implements Serializable{
 		this.id = id;
 	}
 
-	public String getComentario() {
-		return comentario;
+	public String getTexto() {
+		return texto;
 	}
 
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setTexto(String texto) {
+		this.texto = texto;
 	}
 
-	public boolean isTipo() {
-		return tipo;
+	public User getAutor() {
+		return autor;
 	}
 
-	public void setTipo(boolean tipo) {
-		this.tipo = tipo;
-	}
-
-	public User getVotante() {
-		return votante;
-	}
-
-	public void setVotante(User votante) {
-		this.votante = votante;
+	public void setAutor(User autor) {
+		this.autor = autor;
 	}
 
 	public Ideia getIdeia() {

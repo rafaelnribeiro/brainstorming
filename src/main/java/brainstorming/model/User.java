@@ -56,8 +56,11 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL)
 	private List<Grupo> gruposAdministrados;
 	
-	@OneToMany(mappedBy = "votante", cascade = CascadeType.ALL)
-	private List<Voto> votos;
+	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+	private List<Comentario> comentarios;
+	
+	@ManyToMany(mappedBy = "votantes")
+	private List<Ideia> ideiasVotadas;
 
 	public Integer getId() {
 		return id;
@@ -129,6 +132,22 @@ public class User implements Serializable {
 
 	public void setGruposAdministrados(List<Grupo> gruposAdministrados) {
 		this.gruposAdministrados = gruposAdministrados;
+	}
+
+	public List<Grupo> getGruposModerados() {
+		return gruposModerados;
+	}
+
+	public void setGruposModerados(List<Grupo> gruposModerados) {
+		this.gruposModerados = gruposModerados;
+	}
+
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 	@Override
