@@ -16,14 +16,12 @@
 				<hr />
 		
 		<form th:action="@{/ideias/{id}/comment(id = ${id})}"
-			th:method="post">
-			<input type="hidden" th:field="${comentario.id}"/>
+			th:object="${comentario}" th:method="post">
 			
 			<div class="form-group">
 				<label for="comentario">Comentário</label> <textarea id="comentario" name="comentario"
-					rows="7" class="form-control" th:field="${comentario.texto}"></textarea>
-			</div>
-			
+					rows="7" class="form-control" th:field="*{texto}"></textarea>
+			</div>			
 					
 			<button type="submit" class="btn btn-success">Salvar</button>
 			<a th:href="@{/ideias/{id}(id = ${id})}" class="btn btn-default">Cancelar</a>						

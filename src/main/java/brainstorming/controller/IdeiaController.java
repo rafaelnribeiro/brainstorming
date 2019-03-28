@@ -168,7 +168,8 @@ public class IdeiaController {
 	}
 	
 	@PostMapping("/{id}/comment")
-	public String comment( @PathVariable("id") Integer id, @Valid @ModelAttribute Comentario comment, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+	public String comment( @PathVariable("id") Integer id, @Valid @ModelAttribute Comentario comment, 
+						BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
 		Ideia ideia = ideiaService.findOne(id).get();
 		User user = userService.findByEmail(principal.getName());
 		comment.setAutor(user);
