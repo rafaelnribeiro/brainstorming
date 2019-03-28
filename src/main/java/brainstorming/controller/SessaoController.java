@@ -63,17 +63,17 @@ public class SessaoController {
 						@RequestParam("id_grupo") Integer id_grupo, 
 						BindingResult result, RedirectAttributes redirectAttributes) {
 		Sessao sessao = null;
-		String pagina_retorno = "redirect:/sessoes/";
+		String pagina_retorno;
 		
 		Grupo grupo = grupoService.findOne(id_grupo).get();
 		entitySessao.setGrupo(grupo);
 		try {
 			sessao = sessaoService.save(entitySessao);
 			redirectAttributes.addFlashAttribute("success", "Sessão adicionada com sucesso");
-			pagina_retorno = pagina_retorno + sessao.getId() + "/ideias";
+			pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
-			pagina_retorno = "redirect:/sessoes";
+			pagina_retorno = "redirect:/grupos/" + id_grupo + "/sessoes";
 		}
 		
 		
@@ -105,7 +105,7 @@ public class SessaoController {
 			pagina_retorno = "redirect:/sessoes" + sessao.getId() + "/ideias";
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
-			pagina_retorno = "redirect:/sessoes";
+			pagina_retorno = "redirect:/grupos/" + sessao.getGrupo().getId() + "/sessoes";
 		}
 				
 		return pagina_retorno;

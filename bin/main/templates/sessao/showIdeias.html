@@ -14,8 +14,8 @@
 			<div class='page-header'>
 			  <div class='btn-toolbar pull-right'>
 			    <div class='btn-group'>
-					<a th:if="${ehModerador}" type='button' class='btn btn-default' th:href="@{/sessoes/{id}/edit(id = ${sessao.id})}">Editar</a>
-				   	<a th:if="${ehModerador}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvSessaoModel">Remover</a>
+					<a th:if="${ehModerador}" type='button' class='btn btn-default' th:href="@{/sessoes/{id}/edit(id = ${sessao.id})}">Editar Sessão</a>
+				   	<a th:if="${ehModerador}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvSessaoModel">Remover Sessão</a>
 					<div th:if="${ehModerador}" class="modal fade" id="rmvSessaoModel" tabindex="-1" role="dialog" aria-labelledby="rmvSessaoModelLabel" aria-hidden="true">
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
@@ -37,10 +37,14 @@
 					</div>
 			    </div>
 			  </div>
-			  <h2 th:text="${sessao.tema}"></h2>
+			  <h3>
+			  	<a th:text="${sessao.grupo.nome}" th:href="@{/grupos/{id}/sessoes(id = ${sessao.grupo.id})}"></a>
+			  	/
+			  	<label th:text="${sessao.tema}"></label>
+			  </h3>
 			</div>
 			<div class="form-group">
-				<label for="detalhes">Detalhes: </label>
+				<label for="detalhes">Detalhes: </label><br>
 				<span th:text="${sessao.detalhes}"></span>
 			</div>
 			<div class="form-group">

@@ -38,7 +38,7 @@
 					</div>
 			    </div>
 			  </div>
-			  <h2 th:text="${grupo.nome}"></h2>
+			  <h3 th:text="${grupo.nome}"></h3>
 			</div>
 			<div class="form-group">
 				<label for="administrador">Administrador: </label>
@@ -65,9 +65,9 @@
 					<tr th:each="user : ${moderadores}">
 						<td th:text="${user.name}"></td>
 						<td th:text="${user.email}"></td>
-						<td>Modearador</td>
+						<td>Moderador</td>
 						<td class="text-right">
-						<a th:if="${ehAdmin}" th:href="@{/grupos/{id}/rmvModerador/{id_moderador}
+						<a th:if="${ehAdmin}" type="button" class="btn btn-default" th:href="@{/grupos/{id}/rmvModerador/{id_moderador}
 											(id = ${grupo.id}, id_moderador = ${user.id})}">Rebaixar</a>
 							<a th:if="${ehAdmin}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvParticipanteModal">Remover</a>
 							<div th:if="${ehAdmin}" class="modal fade text-left" id="rmvParticipanteModal" tabindex="-1" role="dialog" aria-labelledby="rmvParticipanteModelLabel" aria-hidden="true">
@@ -97,7 +97,7 @@
 						<td th:text="${user.email}"></td>
 						<td>Participante</td>
 						<td class="text-right">
-						<a th:if="${ehAdmin}" th:href="@{/grupos/{id}/addModerador/{id_participante}
+						<a th:if="${ehAdmin}" type="button" class="btn btn-default" th:href="@{/grupos/{id}/addModerador/{id_participante}
 											(id = ${grupo.id}, id_participante = ${user.id})}">Promover</a>
 							<a th:if="${ehAdmin}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvParticipanteModal">Remover</a>
 							<div th:if="${ehAdmin}" class="modal fade text-left" id="rmvParticipanteModal" tabindex="-1" role="dialog" aria-labelledby="rmvParticipanteModelLabel" aria-hidden="true">
@@ -125,7 +125,7 @@
 				</tbody>
 			</table>
 			<div class="form-group" th:if="${ehAdmin}">
-				<a th:href="@{/grupos/{id}/addParticipante(id = ${grupo.id})}" class="btn btn-success">Adicionar Pariticipante</a>
+				<a th:href="@{/grupos/{id}/addParticipante(id = ${grupo.id})}" class="btn btn-success">Adicionar Participante</a>
 			</div>
 		</div>
 	</body>
