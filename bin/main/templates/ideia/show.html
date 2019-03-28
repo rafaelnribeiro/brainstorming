@@ -31,6 +31,7 @@
 			
 	
 			<a th:href="@{/sessoes/{id}/ideias(id = ${ideia.sessao.id})}" class="btn btn-default">Voltar</a>
+			<a th:if="not ${ehAutor}" th:href="@{/ideias/{id}/comment(id = ${ideia.id})}" class="btn btn-default">Adicionar Comentário</a>
 			<a th:if="not ${ehAutor} and not ${ehVotante}" th:href="@{/ideias/{id}/vote(id = ${ideia.id})}" class="btn btn-info">Votar</a>
 			<a th:if="not ${ehAutor} and ${ehVotante}" th:href="@{/ideias/{id}/unvote(id = ${ideia.id})}" class="btn btn-danger">Cancelar Voto</a>
 			<a th:if="${ehAutor}" th:href="@{/ideias/{id}/edit(id = ${ideia.id})}" class="btn btn-info">Editar</a>
