@@ -43,9 +43,20 @@ public class UserService {
 	
 	@Transactional(readOnly = false)
 	public User save(User entity) throws BusinessException {
+		if (entity.getName().trim().isEmpty()) {
+			throw new BusinessException("Campo 'Nome' Vazio");
+		}
+		if(entity.getEmail().trim().isEmpty()) {
+			throw new BusinessException("Campo 'Email' Vazio");	
+		}
 		if(this.findByEmail(entity.getEmail()) != null) {
 			throw new BusinessException("Email já cadastrado");	
 		}
+		if (entity.getPassword().trim().isEmpty() || entity.getPassword().trim().length() < 6 ) {
+			throw new BusinessException("Campo 'Senha' vazio' ou a senha digitada tem menos que 6 caracteres");
+		}
+		
+		
 		entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
 		Role userRole = roleRepository.findByRole("USER");
 		entity.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
