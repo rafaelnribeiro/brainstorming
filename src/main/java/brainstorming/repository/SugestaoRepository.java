@@ -12,3 +12,4 @@ public interface SugestaoRepository extends JpaRepository<Sugestao, Integer>{
 		
 
 }
+ 
