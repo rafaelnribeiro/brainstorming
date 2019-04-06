@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,6 +31,9 @@ public class Sugestao implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "id_ideia")
 	private Ideia ideia;
+	
+	@OneToOne
+	private Solicitacao solicitacao;
 
 	public Integer getId() {
 		return id;
@@ -62,6 +66,12 @@ public class Sugestao implements Serializable{
 	public void setIdeia(Ideia ideia) {
 		this.ideia = ideia;
 	}
-	
-	
+
+	public Solicitacao getSolicitacao() {
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) {
+		this.solicitacao = solicitacao;
+	}
 }

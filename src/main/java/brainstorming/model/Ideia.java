@@ -43,9 +43,14 @@ public class Ideia implements Serializable{
 	@OneToMany(mappedBy = "ideia", cascade = CascadeType.ALL)
 	private List<Comentario> comentarios;
 	
+	@OneToMany(mappedBy = "ideia", cascade = CascadeType.ALL)
+	private List<Sugestao> sugestoes;
+	
 	@ManyToMany
 	@JoinTable(name="votante_ideia")
 	private List<User> votantes;
+	
+	@OneToMany(mappedBy = "solicitacao", cascade = CascadeType.ALL)
 
 	public Integer getId() {
 		return id;
@@ -102,5 +107,12 @@ public class Ideia implements Serializable{
 	public void setVotantes(List<User> votantes) {
 		this.votantes = votantes;
 	}
-	
+
+	public List<Sugestao> getSugestoes() {
+		return sugestoes;
+	}
+
+	public void setSugestoes(List<Sugestao> sugestoes) {
+		this.sugestoes = sugestoes;
+	}
 }
