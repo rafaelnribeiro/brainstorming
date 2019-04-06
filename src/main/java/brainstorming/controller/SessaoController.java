@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import brainstorming.model.Grupo;
 import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
+import brainstorming.model.User;
 import brainstorming.service.GrupoService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.UserService;
@@ -37,11 +38,14 @@ public class SessaoController {
 	@Autowired UserService userService;
 	
 	@GetMapping("/{id}/ideias")
-	public String show(Model model, @PathVariable("id") Integer id) {
+	public String show(Model model, @PathVariable("id") Integer id, Principal principal) {
 		String pagina_retorno;
 		Sessao sessao = sessaoService.findOne(id).get();
 		List<Ideia> ideias = sessao.getIdeias();
-		model.addAttribute("ehModerador", true); //Mudar isso aqui depois
+		User user = userService.findByEmail(principal.getName());
+		boolean ehAdmin = sessao.getGrupo().getAdministrador().getId() == user.getId();
+		boolean ehModerador = ehAdmin || sessao.getGrupo().getModeradores().contains(user);
+		model.addAttribute("ehModerador", ehModerador);
 		model.addAttribute("sessao", sessao);
 		model.addAttribute("ideias", ideias);
 		

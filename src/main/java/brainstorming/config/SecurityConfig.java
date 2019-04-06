@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -19,6 +20,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	DataSource dataSource;
 	
 	@Autowired BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired NoOpPasswordEncoder noop;
 	
 	@Value("${spring.queries.users-query}")
 	private String usersQuery;
@@ -33,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.usersByUsernameQuery(usersQuery)
 				.authoritiesByUsernameQuery(rolesQuery)
 				.dataSource(dataSource)
-				.passwordEncoder(bCryptPasswordEncoder);
+				.passwordEncoder(noop);
 	}
 	
 //	@Override
