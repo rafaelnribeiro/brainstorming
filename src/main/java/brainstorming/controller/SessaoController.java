@@ -1,6 +1,7 @@
 package brainstorming.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -21,9 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import brainstorming.model.Grupo;
 import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
+import brainstorming.model.Solicitacao;
 import brainstorming.model.User;
 import brainstorming.service.GrupoService;
 import brainstorming.service.SessaoService;
+import brainstorming.service.SolicitacaoService;
 import brainstorming.service.UserService;
 import brainstorming.util.exceptions.BusinessException;
 
@@ -36,6 +39,8 @@ public class SessaoController {
 	@Autowired GrupoService grupoService;
 	
 	@Autowired UserService userService;
+	
+	@Autowired SolicitacaoService solicitacaoService;
 	
 	@GetMapping("/{id}/ideias")
 	public String show(Model model, @PathVariable("id") Integer id, Principal principal) {
@@ -53,6 +58,16 @@ public class SessaoController {
 		
 		return pagina_retorno;
 		
+	}
+	
+	@GetMapping("/{id}/solicitacoes")
+	public String showSolicitacoes(Model model, @PathVariable("id") Integer id) {
+		Sessao sessao = sessaoService.findOne(id).get();
+		List<Solicitacao> solicitacoes = solicitacaoService.findBySessao(id);
+		model.addAttribute("solicitacoes", solicitacoes);
+		model.addAttribute("sessao", sessao);
+				
+		return "sessao/showSolicitacoes";
 	}
 	
 	@GetMapping(value = "/new")

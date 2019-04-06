@@ -26,6 +26,3 @@ INSERT INTO ideia VALUES(3, 'Mistura laranja, limao e outras frutas pra fazer um
 
 INSERT INTO sugestao (id, texto, id_usuario, id_ideia) VALUES(1, 'Rapaz, coca com cafeina pode ser demais hein, que tal manter o cafe e mudar a coca por algo mais leve.', 3, 1);
 INSERT INTO sugestao (id, texto, id_usuario, id_ideia) VALUES(2, 'Se tirar a laranja e por um abakashi ficaria bem mais exotico', 3, 3);
-
-
-

@@ -29,7 +29,7 @@
 					rows="7" class="form-control" th:field="${solicitacao.novaDescricao}"></textarea>
 			</div>
 			
-			<input id="id_sessao" name="id_sessao" type="hidden" th:value="${id_sugestao}">
+			<input id="id_sugestao" name="id_sugestao" type="hidden" th:value="${id_sugestao}">
 			
 			<button type="submit" class="btn btn-success">Salvar</button>
 			<a th:href="@{/ideias/{id}/(id = ${id_ideia})}" class="btn btn-default">Cancelar</a>						

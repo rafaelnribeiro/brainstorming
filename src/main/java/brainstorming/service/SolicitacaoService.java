@@ -26,7 +26,7 @@ public class SolicitacaoService {
 		return solicitacaoRepository.findById(id);
 	}
 	
-	public List<Solicitacao> findAll() {
-		return solicitacaoRepository.findAll();
+	public List<Solicitacao> findBySessao(Integer id_sessao) {
+		return solicitacaoRepository.findBySessao(id_sessao);
 	}
 }

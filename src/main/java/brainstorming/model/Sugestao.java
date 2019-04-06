@@ -2,6 +2,7 @@ package brainstorming.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class Sugestao implements Serializable{
 	@JoinColumn(name = "id_ideia")
 	private Ideia ideia;
 	
-	@OneToOne
+	@OneToOne(mappedBy = "sugestao", cascade = CascadeType.PERSIST)
 	private Solicitacao solicitacao;
 
 	public Integer getId() {
