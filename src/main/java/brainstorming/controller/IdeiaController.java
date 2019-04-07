@@ -82,7 +82,7 @@ public class IdeiaController {
 			pagina_retorno = "redirect:/ideias/" + ideia.getId();
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
-			pagina_retorno = "redirect:/ideias";
+			pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";
 		}
 		
 		
@@ -115,7 +115,7 @@ public class IdeiaController {
 			pagina_retorno = "redirect:/ideias/" + ideia.getId();
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
-			pagina_retorno = "redirect:/ideias";
+			pagina_retorno = "redirect:/sessoes/" + ideia.getSessao().getId() + "/ideias";
 		}
 		
 		return pagina_retorno;

@@ -33,7 +33,7 @@ public class Sugestao implements Serializable{
 	@JoinColumn(name = "id_ideia")
 	private Ideia ideia;
 	
-	@OneToOne(mappedBy = "sugestao", cascade = CascadeType.PERSIST)
+	@OneToOne(mappedBy = "sugestao")
 	private Solicitacao solicitacao;
 
 	public Integer getId() {

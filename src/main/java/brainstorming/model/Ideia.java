@@ -50,7 +50,8 @@ public class Ideia implements Serializable{
 	@JoinTable(name="votante_ideia")
 	private List<User> votantes;
 	
-	@OneToMany(mappedBy = "solicitacao", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "ideia", cascade = CascadeType.ALL)
+	private List<Solicitacao> solicitacoes;
 
 	public Integer getId() {
 		return id;

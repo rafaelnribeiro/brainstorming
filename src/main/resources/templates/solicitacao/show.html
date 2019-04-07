@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+<title>Analisar Solicitação</title>
+</head>
+<body>
+	<div layout:fragment="content" class="row">
+		<h1>Analisar Solicitação</h1>
+		<hr />
+		<div class="col-md-6">
+			<div class="form-group">
+				<label for="titulo">Título: </label>
+				<span th:text="${solicitacao.ideia.titulo}"></span>
+			</div>
+			
+			<div class="form-group">
+				<label for="descricao">Descrição: </label><br>
+				<span th:text="${solicitacao.ideia.descricao}"></span>
+			</div>
+			
+			<div class="form-group">
+				<label for="sugestao">Sugestao: </label><br>
+				<span th:text="${solicitacao.sugestao.texto}"></span>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label for="novoTitulo">Novo Título:</label><br>
+				<span th:text="${solicitacao.novoTitulo}"></span>
+			</div><br>
+			<div class="form-group">
+				<label for="novoTitulo">Nova Descrição:</label><br>
+				<span th:text="${solicitacao.novaDescricao}"></span>
+			</div><br>
+			<div class="form-group">
+					<a type="button" class="btn btn-default" th:href="@{/solicitacoes/{id}/aprovar(id = ${solicitacao.id})}">Aprovar</a>
+				   	<a type="button" class="btn btn-danger" th:href="@{/solicitacoes/{id}/recusar(id = ${solicitacao.id})}">Recusar</a>
+			</div><br>
+		</div>	
+	</div>
+</body>
+</html>

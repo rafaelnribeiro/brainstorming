@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import brainstorming.model.Solicitacao;
+import brainstorming.model.Sugestao;
 
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Integer>{
 
-	@Query("SELECT 	S "
-		+ "FROM Solicitacao S "
-		+ "JOIN Ideia I ON S.ideia = I.id "
-		+ "JOIN Sessao B ON I.sessao = B.id "
-		+ "WHERE B.id = ?1")
+	@Query("SELECT sol FROM Sessao ses INNER JOIN ses.ideias i INNER JOIN i.solicitacoes sol WHERE ses.id = ?1")
 	List<Solicitacao> findBySessao(Integer id_sessao);
+	
+	boolean existsBySugestao(Sugestao sugestao);
 }
+
+

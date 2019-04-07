@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import brainstorming.model.Solicitacao;
 import brainstorming.repository.SolicitacaoRepository;
+import brainstorming.util.exceptions.BusinessException;
 
 
 @Service
@@ -18,7 +19,10 @@ public class SolicitacaoService {
 	@Autowired SolicitacaoRepository solicitacaoRepository;
 	
 	@Transactional(readOnly = false)
-	public Solicitacao save(Solicitacao sol) {		
+	public Solicitacao save(Solicitacao sol) throws BusinessException {		
+		if(solicitacaoRepository.existsBySugestao(sol.getSugestao())) {
+			throw new BusinessException("Já existe uma solicitação para essa sugestão");
+		}
 		return solicitacaoRepository.save(sol);
 	}
 	
@@ -28,5 +32,10 @@ public class SolicitacaoService {
 	
 	public List<Solicitacao> findBySessao(Integer id_sessao) {
 		return solicitacaoRepository.findBySessao(id_sessao);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(Solicitacao sol) {
+		solicitacaoRepository.delete(sol);
 	}
 }

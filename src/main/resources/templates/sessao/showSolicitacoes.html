@@ -53,14 +53,14 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th>Ideia</th>
 						<th>Autor</th>
+						<th>Ideia</th>						
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="solicitacao : ${solicitacoes}">
-						<td th:text="${solicitacao.ideia.titulo}"></td>
 						<td th:text="${solicitacao.ideia.autor}"></td>
+						<td th:text="${solicitacao.ideia.titulo}"></td>
 						<td class="text-right">
 							<a th:href="@{/solicitacoes/{id}(id = ${solicitacao.id})}" class="btn btn-primary">Exibir</a>
 						</td>

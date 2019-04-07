@@ -29,16 +29,16 @@ public class IdeiaService {
 	
 	@Transactional(readOnly = false)
 	public Ideia save(Ideia entity) throws BusinessException {
+		System.out.println("1 =====================>" +ideiaRepository.findById(entity.getId()).get().getTitulo());
 		if (entity.getTitulo().trim().isEmpty()) {
 			throw new BusinessException("Titulo vazio");
-		}
-		
-		List<Ideia> list_ideias = ideiaRepository.findAll();
-		for (Ideia ideia : list_ideias) {
-			if(ideia.getTitulo() == entity.getTitulo()) {
-				throw new BusinessException("Já existe uma ideia com esse titulo");
-			}
 		}	
+		System.out.println("2 =====================>" +ideiaRepository.findById(entity.getId()).get().getTitulo());
+		if(ideiaRepository.existsByTitulo(entity.getTitulo())) {
+			System.out.println("3 =====================>" +ideiaRepository.findById(entity.getId()).get().getTitulo());
+			throw new BusinessException("Já existe uma ideia com esse titulo");
+		}
+		System.out.println("4 =====================>" +ideiaRepository.findById(entity.getId()).get().getTitulo());
 		return ideiaRepository.save(entity);
 	}
 	
