@@ -7,5 +7,6 @@ import brainstorming.model.Sessao;
 
 @Repository
 public interface SessaoRepository extends JpaRepository<Sessao, Integer>{
-
+	
+	boolean existsByTema(String tema);
 }

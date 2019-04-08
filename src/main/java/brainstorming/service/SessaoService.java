@@ -27,16 +27,9 @@ public class SessaoService {
 	
 	@Transactional(readOnly = false)
 	public Sessao save(Sessao entity) throws BusinessException {
-		List<Sessao> list_sessao = sessaoRepository.findAll();
-		for (Sessao sessao: list_sessao) {
-			if(sessao.getTema() == entity.getTema()) {
-				throw new BusinessException("Já existe uma sessão com esse tema");
-			}
-		}
-		
-		/*if (condition) {
-			
-		}*/
+//		if(sessaoRepository.existsByTema(entity.getTema())) {
+//			throw new BusinessException("Já existe uma sessão com esse tema");
+//		}
 		return sessaoRepository.save(entity);
 	}
 	

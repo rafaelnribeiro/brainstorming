@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 //	@Override
 //	public void configure(AuthenticationManagerBuilder auth) throws Exception{
-//		auth.inMemoryAuthentication().withUser("Goku").password("{noop}baka").roles("PARTICIPANTE");
+//		auth.inMemoryAuthentication().withUser("User").password("{noop}password").roles("PARTICIPANTE");
 //	}
 	
 	@Override
@@ -54,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("/grupos/**").hasAnyAuthority("USER")
 				.antMatchers("/sessoes/**").hasAnyAuthority("USER")
 				.antMatchers("/ideias/**").hasAnyAuthority("USER")
+				.antMatchers("/solicitacoes/**").hasAnyAuthority("USER")
 				.and().csrf().ignoringAntMatchers("/h2/**")
 				.and().headers().frameOptions().sameOrigin()
 				.and().formLogin().loginPage("/login")

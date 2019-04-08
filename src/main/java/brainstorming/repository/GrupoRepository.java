@@ -7,5 +7,6 @@ import brainstorming.model.Grupo;
 
 @Repository
 public interface GrupoRepository extends JpaRepository<Grupo, Integer>{
-
+	
+	public boolean existsByNome(String nome);
 }

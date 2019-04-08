@@ -14,6 +14,7 @@
 			<div class='page-header'>
 			  <div class='btn-toolbar pull-right'>
 			    <div class='btn-group'>
+			    	<a th:if="${ehModerador}" type='button' class='btn btn-default' th:href="@{/sessoes/{id}/solicitacoes(id = ${sessao.id})}">Solicitações de Alteração</a>
 					<a th:if="${ehModerador}" type='button' class='btn btn-default' th:href="@{/sessoes/{id}/edit(id = ${sessao.id})}">Editar Sessão</a>
 				   	<a th:if="${ehModerador}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvSessaoModel">Remover Sessão</a>
 					<div th:if="${ehModerador}" class="modal fade" id="rmvSessaoModel" tabindex="-1" role="dialog" aria-labelledby="rmvSessaoModelLabel" aria-hidden="true">

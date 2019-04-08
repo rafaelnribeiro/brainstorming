@@ -60,9 +60,13 @@ public class SessaoController {
 	}
 	
 	@GetMapping("/{id}/solicitacoes")
-	public String showSolicitacoes(Model model, @PathVariable("id") Integer id) {
+	public String showSolicitacoes(Model model, @PathVariable("id") Integer id, Principal principal) {
 		Sessao sessao = sessaoService.findOne(id).get();
 		List<Solicitacao> solicitacoes = solicitacaoService.findBySessao(id);
+		User user = userService.findByEmail(principal.getName());
+		boolean ehAdmin = sessao.getGrupo().getAdministrador().getId() == user.getId();
+		boolean ehModerador = ehAdmin || sessao.getGrupo().getModeradores().contains(user);
+		model.addAttribute("ehModerador", ehModerador);
 		model.addAttribute("solicitacoes", solicitacoes);
 		model.addAttribute("sessao", sessao);
 				
@@ -118,9 +122,9 @@ public class SessaoController {
 		sessao.setDetalhes(entitySessao.getDetalhes());
 		sessao.setTema(entitySessao.getTema());
 		try {
-			sessao = sessaoService.save(entitySessao);
+			sessaoService.save(sessao);
 			redirectAttributes.addFlashAttribute("success", "Sessão atualizada com sucesso");
-			pagina_retorno = "redirect:/sessoes" + sessao.getId() + "/ideias";
+			pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
 			pagina_retorno = "redirect:/grupos/" + sessao.getGrupo().getId() + "/sessoes";
