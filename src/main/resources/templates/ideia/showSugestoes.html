@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<title>Sugestões</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div class='page-header'>
+			  <h3>
+			  Sugestões
+			  </h3>
+			</div>			
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Autor</th>
+						<th>Sugestão</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="sugestao : ${sugestoes}">
+						<td th:text="${sugestao.autor}"></td>
+						<td th:text="${sugestao.texto}"></td>
+						<td class="text-right">
+							<a th:href="@{/solicitacoes/new?id_sugestao={id}(id = ${sugestao.id})}" class="btn btn-primary">Solicitar Alteração</a>
+						</td>
+					</tr>					
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

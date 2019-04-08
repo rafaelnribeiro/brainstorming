@@ -1,7 +1,7 @@
 package brainstorming.controller;
 
 import java.security.Principal;
-
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -20,7 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
+import brainstorming.model.Sugestao;
 import brainstorming.model.User;
+import brainstorming.repository.IdeiaRepository;
 import brainstorming.model.Comentario;
 import brainstorming.service.IdeiaService;
 import brainstorming.service.SessaoService;
@@ -186,5 +188,15 @@ public class IdeiaController {
 		return "redirect:/ideias/"+id;
 		
 		
+	}
+	
+	@GetMapping("/{id}/sugestoes")
+	public String showSuggestion(@PathVariable("id") Integer id, Model model) {
+		Ideia ideia = ideiaService.findOne(id).get();
+		List<Sugestao> sugestao = ideia.getSugestoes();
+		model.addAttribute("sugestoes", sugestao);
+		
+		
+		return "ideia/showSugestoes";
 	}
 }
