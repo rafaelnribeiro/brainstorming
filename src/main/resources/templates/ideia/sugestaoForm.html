@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Deixe sua sugestão</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1>Nova Sugestão</h1>
+				<hr />
+		
+		<form th:action="@{/ideias/{id}/suggest(id = ${id})}"
+			th:object="${sugestao}" th:method="post">
+			
+			<div class="form-group">
+				<label for="sugestao">Sugestao</label> <textarea id="sugestao" name="sugestao"
+					rows="7" class="form-control" th:field="*{texto}"></textarea>
+			</div>			
+					
+			<button type="submit" class="btn btn-success">Salvar</button>
+			<a th:href="@{/ideias/{id}(id = ${id})}" class="btn btn-default">Cancelar</a>						
+		</form>
+	</div>
+</body>
+</html>

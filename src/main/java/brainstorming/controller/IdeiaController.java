@@ -22,10 +22,10 @@ import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
 import brainstorming.model.Sugestao;
 import brainstorming.model.User;
-import brainstorming.repository.IdeiaRepository;
 import brainstorming.model.Comentario;
 import brainstorming.service.IdeiaService;
 import brainstorming.service.SessaoService;
+import brainstorming.service.SugestaoService;
 import brainstorming.service.UserService;
 import brainstorming.service.ComentarioService;
 import brainstorming.util.exceptions.BusinessException;
@@ -45,6 +45,8 @@ public class IdeiaController {
 	
 	@Autowired
 	private ComentarioService comentarioService;
+	
+	@Autowired SugestaoService sugestaoService;
 	
 	@GetMapping("/{id}")
 	public String show(Model model,  @PathVariable("id") Integer id, Principal principal) {
@@ -186,8 +188,6 @@ public class IdeiaController {
 		
 				
 		return "redirect:/ideias/"+id;
-		
-		
 	}
 	
 	@GetMapping("/{id}/sugestoes")
@@ -199,4 +199,29 @@ public class IdeiaController {
 		
 		return "ideia/showSugestoes";
 	}
+	
+	@RequestMapping("/{id}/suggest")
+	public String suggest(Model model, @PathVariable("id") Integer id, @ModelAttribute Sugestao sugestao) {
+		return "/ideia/sugestaoForm";
+	}
+	
+	@PostMapping("/{id}/suggest")
+	public String suggest( @PathVariable("id") Integer id, @Valid @ModelAttribute Sugestao sugestao, 
+						BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+		Ideia ideia = ideiaService.findOne(id).get();
+		User user = userService.findByEmail(principal.getName());
+		sugestao.setAutor(user);
+		sugestao.setIdeia(ideia);
+		
+		try {
+			sugestaoService.save(sugestao);			
+			redirectAttributes.addFlashAttribute("success", "Sugestão adicionada com sucesso");
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+		}
+		
+				
+		return "redirect:/ideias/"+id;
+	}
+
 }
