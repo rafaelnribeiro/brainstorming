@@ -27,14 +27,14 @@ public class GrupoService {
 		return grupoRepository.findById(id);
 	}
 	
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = BusinessException.class)
 	public Grupo save(Grupo entity) throws BusinessException {
 		if (entity.getNome().trim().isEmpty()) {
 			throw new BusinessException("Nome do grupo vazio");
 		}
-//		if (grupoRepository.existsByNome(entity.getNome())) {
-//			throw new BusinessException("Nome do grupo já existe");
-//		}
+		if (grupoRepository.existsByNome(entity.getNome())) {
+			throw new BusinessException("Nome do grupo já existe");
+		}
 		return grupoRepository.save(entity);
 	}
 	
@@ -56,8 +56,7 @@ public class GrupoService {
 	public void rmvParticipante(Grupo entity, User participante){
 		entity.getModeradores().remove(participante);
 		entity.getParticipantes().remove(participante);
-		
-		
+	
 		grupoRepository.save(entity);
 	}
 	

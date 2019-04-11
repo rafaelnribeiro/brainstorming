@@ -18,10 +18,13 @@ public class SolicitacaoService {
 
 	@Autowired SolicitacaoRepository solicitacaoRepository;
 	
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = BusinessException.class)
 	public Solicitacao save(Solicitacao sol) throws BusinessException {		
 		if(solicitacaoRepository.existsBySugestao(sol.getSugestao())) {
 			throw new BusinessException("Já existe uma solicitação para essa sugestão");
+		}
+		if(sol.getIdeia().getDescricao().equals(sol.getNovaDescricao())) {
+			throw new BusinessException("A nova descrição é idêntica a atual");
 		}
 		return solicitacaoRepository.save(sol);
 	}

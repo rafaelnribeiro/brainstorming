@@ -73,7 +73,6 @@ public class SolicitacaoController {
 		ideia.setTitulo(sol.getNovoTitulo());
 		ideia.setDescricao(sol.getNovaDescricao());
 		try {
-			//System.out.println("TITULO: " + ideiaService.findOne(ideia.getId()).get().getTitulo());
 			ideiaService.save(ideia);
 			solicitacaoService.delete(sol);
 			redAtt.addFlashAttribute("success", "Solicitação aprovada, a ideia foi modificada conforme especificado");

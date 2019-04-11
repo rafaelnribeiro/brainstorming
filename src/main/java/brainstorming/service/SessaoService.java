@@ -25,11 +25,16 @@ public class SessaoService {
 		return sessaoRepository.findById(id);
 	}
 	
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = BusinessException.class)
 	public Sessao save(Sessao entity) throws BusinessException {
-//		if(sessaoRepository.existsByTema(entity.getTema())) {
-//			throw new BusinessException("Já existe uma sessão com esse tema");
-//		}
+		if(entity.getId() == null) {
+			if(sessaoRepository.existsByTema(entity.getTema()))
+				throw new BusinessException("Já existe uma sessão com esse tema");
+		}else {
+			if(sessaoRepository.existsAnotherByTema(entity.getTema(), entity.getId()))
+				throw new BusinessException("Já existe uma sessão com esse tema");
+		}
+			
 		return sessaoRepository.save(entity);
 	}
 	

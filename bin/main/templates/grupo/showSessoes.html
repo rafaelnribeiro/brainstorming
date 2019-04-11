@@ -59,7 +59,7 @@
 				</tbody>
 			</table>
 			<div class="form-group">
-				<a th:href="@{/sessoes/new?id_grupo={id}(id = ${grupo.id})}" class="btn btn-success">Nova Sessão</a>
+				<a th:if="${ehAdmin}" th:href="@{/sessoes/new?id_grupo={id}(id = ${grupo.id})}" class="btn btn-success">Nova Sessão</a>
 			</div>
 		</div>
 	</body>

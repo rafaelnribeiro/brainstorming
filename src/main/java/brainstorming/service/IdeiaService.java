@@ -27,14 +27,20 @@ public class IdeiaService {
 		return ideiaRepository.findById(id);
 	}
 	
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = BusinessException.class)
 	public Ideia save(Ideia entity) throws BusinessException {
 		if (entity.getTitulo().trim().isEmpty()) {
 			throw new BusinessException("Titulo vazio");
-		}	
-//		if(ideiaRepository.existsByTitulo(entity.getTitulo())) {
-//			throw new BusinessException("Já existe uma ideia com esse titulo");
-//		}
+		}
+		
+		if(entity.getId() == null) {
+			if(ideiaRepository.existsByTitulo(entity.getTitulo()))
+				throw new BusinessException("Já existe uma ideia com esse titulo");
+		}else {
+			if(ideiaRepository.existsAnotherByTitulo(entity.getTitulo(), entity.getId()))
+				throw new BusinessException("Já existe uma ideia com esse titulo");
+		}
+
 		return ideiaRepository.save(entity);
 	}
 	

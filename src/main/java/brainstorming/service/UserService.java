@@ -40,7 +40,7 @@ public class UserService {
 		return userRepository.findByEmail(email);
 	}
 	
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = BusinessException.class)
 	public User save(User entity) throws BusinessException {
 		if (entity.getName().trim().isEmpty()) {
 			throw new BusinessException("Campo 'Nome' Vazio");
