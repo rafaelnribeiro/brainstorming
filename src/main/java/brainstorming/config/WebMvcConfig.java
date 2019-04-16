@@ -15,8 +15,8 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		return bCryptPasswordEncoder;
 	}
 	
-	@Bean NoOpPasswordEncoder noopPasswordEncoder() {
-		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-	}
+//	@Bean NoOpPasswordEncoder noopPasswordEncoder() {
+//		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+//	}
 
 }
