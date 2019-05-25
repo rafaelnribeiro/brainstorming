@@ -1,14 +1,14 @@
 REPLACE INTO `role` VALUES (1,'USER');
 
---INSERT INTO user VALUES (1, 1, 'felipe@gmail.com', 'Felipe da Silva', '123456');
---INSERT INTO user VALUES (2, 1, 'maria@gmail.com', 'Maria da Silva', '123456');
---INSERT INTO user VALUES (3, 1, 'joaquim@gmail.com', 'Joaquim da Costa', '123456');
---INSERT INTO user VALUES (4, 1, 'fernanda@gmail.com', 'Fernanda da Costa', '123456');
---
---INSERT INTO user_role VALUES (1,1);
---INSERT INTO user_role VALUES (2,1);
---INSERT INTO user_role VALUES (3,1);
---INSERT INTO user_role VALUES (4,1);
+INSERT INTO user VALUES (1, 1, 'felipe@gmail.com', 'Felipe da Silva', '123456');
+INSERT INTO user VALUES (2, 1, 'maria@gmail.com', 'Maria da Silva', '123456');
+INSERT INTO user VALUES (3, 1, 'joaquim@gmail.com', 'Joaquim da Costa', '123456');
+INSERT INTO user VALUES (4, 1, 'fernanda@gmail.com', 'Fernanda da Costa', '123456');
+
+INSERT INTO user_role VALUES (1,1);
+INSERT INTO user_role VALUES (2,1);
+INSERT INTO user_role VALUES (3,1);
+INSERT INTO user_role VALUES (4,1);
 --
 --INSERT INTO grupo VALUES (1, 'Equipe de marketing da doli', 1);
 --INSERT INTO participante_grupo VALUES (1, 2);

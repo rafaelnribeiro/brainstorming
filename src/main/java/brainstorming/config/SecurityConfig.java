@@ -19,9 +19,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	DataSource dataSource;
 	
-	@Autowired BCryptPasswordEncoder bCryptPasswordEncoder;
+//	@Autowired BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-//	@Autowired NoOpPasswordEncoder noop;
+	@Autowired NoOpPasswordEncoder noop;
 	
 	@Value("${spring.queries.users-query}")
 	private String usersQuery;
@@ -36,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.usersByUsernameQuery(usersQuery)
 				.authoritiesByUsernameQuery(rolesQuery)
 				.dataSource(dataSource)
-				.passwordEncoder(bCryptPasswordEncoder);
+				.passwordEncoder(noop);
+				//.passwordEncoder(bCryptPasswordEncoder);
 	}
 	
 //	@Override
