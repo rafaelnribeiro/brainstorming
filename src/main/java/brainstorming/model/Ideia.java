@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import brainstorming.model.estrutura.No;
+
 @Entity
 @Table(name = "ideia")
 public class Ideia implements Serializable{
@@ -36,9 +38,14 @@ public class Ideia implements Serializable{
 	@JoinColumn(name = "id_usuario")
 	private User autor;
 	
+	/*      *       */
 	@ManyToOne
 	@JoinColumn(name = "id_sessao")
 	private Sessao sessao;
+	/*          *      */
+	@ManyToOne
+	@JoinColumn(name = "id_no")
+	private No no;
 	
 	@OneToMany(mappedBy = "ideia", cascade = CascadeType.ALL)
 	private List<Comentario> comentarios;
