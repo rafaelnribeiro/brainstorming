@@ -8,12 +8,39 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "step")
 public class Step extends No {
-	
-	@OneToOne(mappedBy = "right")
+	private static final long serialVersionUID = 1L;
+
+	@OneToOne
 	private Step left;
-	@OneToOne(mappedBy = "left")
+	
+	@OneToOne
 	private Step right;
+	
 	@OneToOne(mappedBy = "first")
 	private Storyboard storyboard;
+
+	public Step getLeft() {
+		return left;
+	}
+
+	public void setLeft(Step left) {
+		this.left = left;
+	}
+
+	public Step getRight() {
+		return right;
+	}
+
+	public void setRight(Step right) {
+		this.right = right;
+	}
+
+	public Storyboard getStoryboard() {
+		return storyboard;
+	}
+
+	public void setStoryboard(Storyboard storyboard) {
+		this.storyboard = storyboard;
+	}
 	
 }

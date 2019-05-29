@@ -1,5 +1,6 @@
 package brainstorming.controller;
 
+import java.io.File;
 import java.security.Principal;
 import java.util.List;
 
@@ -18,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import brainstorming.controller.estrutura_factory.DivisorFactory;
+import brainstorming.controller.estrutura_factory.EstruturaFactory;
 import brainstorming.model.Grupo;
 import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
 import brainstorming.model.Solicitacao;
 import brainstorming.model.User;
+import brainstorming.model.estrutura.Estrutura;
 import brainstorming.service.GrupoService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.SolicitacaoService;
@@ -32,6 +36,7 @@ import brainstorming.util.exceptions.BusinessException;
 @Controller
 @RequestMapping("/sessoes")
 public class SessaoController {
+	EstruturaFactory eFactory = new DivisorFactory();
 	
 	@Autowired SessaoService sessaoService;
 	
@@ -40,6 +45,12 @@ public class SessaoController {
 	@Autowired UserService userService;
 	
 	@Autowired SolicitacaoService solicitacaoService;
+	
+	@GetMapping("/{id}/estrutura")
+	public String showEstrutura(Model model, @PathVariable("id") Integer id, Principal principal) {
+		
+		return "";
+	}
 	
 	@GetMapping("/{id}/ideias")
 	public String show(Model model, @PathVariable("id") Integer id, Principal principal) {
@@ -89,6 +100,9 @@ public class SessaoController {
 		
 		Grupo grupo = grupoService.findOne(id_grupo).get();
 		entitySessao.setGrupo(grupo);
+		File f = new File("");
+		Estrutura estrutura = eFactory.create(f);
+		entitySessao.setEstrutura(estrutura);
 		try {
 			sessao = sessaoService.save(entitySessao);
 			redirectAttributes.addFlashAttribute("success", "Sessão adicionada com sucesso");

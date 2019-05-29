@@ -38,11 +38,10 @@ public class Ideia implements Serializable{
 	@JoinColumn(name = "id_usuario")
 	private User autor;
 	
-	/*      *       */
-	@ManyToOne
-	@JoinColumn(name = "id_sessao")
-	private Sessao sessao;
-	/*          *      */
+//	@ManyToOne
+//	@JoinColumn(name = "id_sessao")
+//	private Sessao sessao;
+	
 	@ManyToOne
 	@JoinColumn(name = "id_no")
 	private No no;
@@ -92,13 +91,13 @@ public class Ideia implements Serializable{
 		this.autor = autor;
 	}
 
-	public Sessao getSessao() {
-		return sessao;
-	}
-
-	public void setSessao(Sessao sessao) {
-		this.sessao = sessao;
-	}
+//	public Sessao getSessao() {
+//		return sessao;
+//	}
+//
+//	public void setSessao(Sessao sessao) {
+//		this.sessao = sessao;
+//	}
 
 	public List<Comentario> getComentarios() {
 		return comentarios;

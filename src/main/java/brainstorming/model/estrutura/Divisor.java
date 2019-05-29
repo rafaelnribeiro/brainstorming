@@ -14,4 +14,12 @@ public class Divisor extends Estrutura{
 
 	@OneToMany(mappedBy = "divisor", cascade = CascadeType.ALL)
 	private List<Quadro> quadros;
+
+	public List<Quadro> getQuadros() {
+		return quadros;
+	}
+
+	public void setQuadros(List<Quadro> quadros) {
+		this.quadros = quadros;
+	}
 }
