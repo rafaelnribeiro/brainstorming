@@ -76,7 +76,7 @@ public class SolicitacaoController {
 			ideiaService.save(ideia);
 			solicitacaoService.delete(sol);
 			redAtt.addFlashAttribute("success", "Solicitação aprovada, a ideia foi modificada conforme especificado");
-			pagina_retorno = "redirect:/sessoes/" + ideia.getSessao().getId() + "/solicitacoes";
+			pagina_retorno = "redirect:/sessoes/" + ideia.getNo().getEstrutura().getSessao().getId() + "/solicitacoes";
 		} catch (Exception e) {
 			redAtt.addFlashAttribute("error", e.getMessage());
 			pagina_retorno = "redirect:/solicitacoes/" + sol.getId();
@@ -86,7 +86,7 @@ public class SolicitacaoController {
 	@GetMapping("/{id}/recusar")
 	public String deny(@PathVariable("id") Integer id, RedirectAttributes redAtt) {
 		Solicitacao sol = solicitacaoService.findOne(id).get();
-		int id_sessao = sol.getIdeia().getSessao().getId();
+		int id_sessao = sol.getIdeia().getNo().getEstrutura().getSessao().getId();
 		solicitacaoService.delete(sol);
 		redAtt.addFlashAttribute("success", "Solicitação recusada");
 		return "redirect:/sessoes/" + id_sessao + "/solicitacoes";

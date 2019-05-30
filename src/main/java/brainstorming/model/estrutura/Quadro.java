@@ -20,6 +20,5 @@ public class Quadro extends No{
 
 	public void setDivisor(Divisor divisor) {
 		this.divisor = divisor;
-	}
-	
+	}	
 }

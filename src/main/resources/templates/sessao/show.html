@@ -53,7 +53,7 @@
 					<table class="table">
 					<thead>
 						<tr>
-							<th th:text="${quadro.nome}"></th>
+							<th th:text="${quadro.nome}"><a th:href="@{/ideias/new?id_no={id}(id = ${quadro.id})}" class="btn btn-success">Adicionar</a></th>		
 						</tr>
 					</thead>
 						<tbody>

@@ -10,6 +10,7 @@ import java.util.ListIterator;
 import brainstorming.model.Ideia;
 import brainstorming.model.estrutura.Divisor;
 import brainstorming.model.estrutura.Estrutura;
+import brainstorming.model.estrutura.No;
 import brainstorming.model.estrutura.Quadro;
 
 public class DivisorFactory implements EstruturaFactory{
@@ -34,6 +35,16 @@ public class DivisorFactory implements EstruturaFactory{
 		q2.setDivisor(e);
 		q3.setDivisor(e);
 		q4.setDivisor(e);
+		e.setNos(new ArrayList<No>());
+		e.getNos().add(q1);
+		e.getNos().add(q2);
+		e.getNos().add(q3);
+		e.getNos().add(q4);
+		q1.setEstrutura(e);
+		q2.setEstrutura(e);
+		q3.setEstrutura(e);
+		q4.setEstrutura(e);
+		
 		
 		Ideia id1 = new Ideia();
 		id1.setTitulo("Ideia de Numero 1");
@@ -54,6 +65,8 @@ public class DivisorFactory implements EstruturaFactory{
 		
 		q1.setIdeias(new ArrayList<Ideia>());
 		q2.setIdeias(new ArrayList<Ideia>());
+		q3.setIdeias(new ArrayList<Ideia>());
+		q4.setIdeias(new ArrayList<Ideia>());
 		q1.getIdeias().add(id1);
 		q1.getIdeias().add(id2);
 		q1.getIdeias().add(id3);

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import brainstorming.model.Ideia;
@@ -25,11 +26,14 @@ public abstract class No implements Serializable{
 	private Integer id;
 	
 	@OneToMany(mappedBy = "no", cascade = CascadeType.ALL)
-	private List<Ideia> ideias; 
+	private List<Ideia> ideias;
+	
+	@ManyToOne
+	private Estrutura estrutura;
 	
 	@Column(name = "nome")
 	private String nome;
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -53,4 +57,13 @@ public abstract class No implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+	public Estrutura getEstrutura() {
+		return estrutura;
+	}
+
+	public void setEstrutura(Estrutura estrutura) {
+		this.estrutura = estrutura;
+	}
+	
 }

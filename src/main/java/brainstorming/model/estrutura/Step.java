@@ -42,6 +42,5 @@ public class Step extends No {
 
 	public void setStoryboard(Storyboard storyboard) {
 		this.storyboard = storyboard;
-	}
-	
+	}	
 }

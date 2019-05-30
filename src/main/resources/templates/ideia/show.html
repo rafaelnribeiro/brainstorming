@@ -29,12 +29,13 @@
 				<span th:text="${ideia.descricao}"></span>
 			</div>
 	
-			<a th:href="@{/sessoes/{id}/ideias(id = ${ideia.sessao.id})}" class="btn btn-default">Voltar</a>
+			<a class="btn btn-default">Voltar</a>
 			<a th:if="not ${ehAutor}" th:href="@{/ideias/{id}/comment(id = ${ideia.id})}" class="btn btn-default">Adicionar Comentário</a>
 			<a th:if="not ${ehAutor}" th:href="@{/ideias/{id}/suggest(id = ${ideia.id})}" class="btn btn-default">Adicionar Sugestão</a>
 			<a th:if="not ${ehAutor} and not ${ehVotante}" th:href="@{/ideias/{id}/vote(id = ${ideia.id})}" class="btn btn-info">Votar</a>
 			<a th:if="not ${ehAutor} and ${ehVotante}" th:href="@{/ideias/{id}/unvote(id = ${ideia.id})}" class="btn btn-danger">Cancelar Voto</a>
 			<a th:if="${ehAutor}" th:href="@{/ideias/{id}/sugestoes(id = ${ideia.id})}" class="btn btn-default">Sugestões</a>
+			<a th:if="${ehAutor}" th:href="@{/ideias/{id}/edit(id = ${ideia.id})}" class="btn btn-default">Editar</a>
 			<a th:if="${ehAutor}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvIdeiaModal">Remover</a>
 			<div th:if="${ehAutor}" class="modal fade" id="rmvIdeiaModal" tabindex="-1" role="dialog" aria-labelledby="rmvIdeiaModalLabel" aria-hidden="true">
 			  <div class="modal-dialog" role="document">

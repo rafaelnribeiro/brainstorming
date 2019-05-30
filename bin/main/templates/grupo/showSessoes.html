@@ -53,7 +53,7 @@
 					<tr th:each="sessao : ${sessoes}">
 						<td th:text="${sessao.tema}"></td>
 						<td class="text-right">
-							<a th:href="@{/sessoes/{id}/ideias(id = ${sessao.id})}" class="btn btn-primary">Exibir</a>
+							<a th:href="@{/sessoes/{id}/show(id = ${sessao.id})}" class="btn btn-primary">Exibir</a>
 						</td>
 					</tr>					
 				</tbody>

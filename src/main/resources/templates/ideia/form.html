@@ -31,7 +31,7 @@
 					rows="7" class="form-control" th:field="${ideia.descricao}"></textarea>
 			</div>
 
-			<input id="id_sessao" name="id_sessao" type="hidden" th:value="${id_sessao}">
+			<input id="id_no" name="id_no" type="hidden" th:value="${id_no}">
 
 			<button type="submit" class="btn btn-success">Salvar</button>
 			<a th:href="@{/sessoes/{id}/ideias(id = ${id_sessao})}" class="btn btn-default">Cancelar</a>						

@@ -1,13 +1,16 @@
 package brainstorming.model.estrutura;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import brainstorming.model.Sessao;
@@ -23,6 +26,9 @@ public abstract class Estrutura implements Serializable {
 	
 	@OneToOne(mappedBy = "estrutura")
 	private Sessao sessao;
+	
+	@OneToMany(mappedBy = "estrutura", cascade = CascadeType.ALL)
+	private List<No> nos;
 
 	public Integer getId() {
 		return id;
@@ -38,5 +44,14 @@ public abstract class Estrutura implements Serializable {
 
 	public void setSessao(Sessao sessao) {
 		this.sessao = sessao;
+	}
+
+	public List<No> getNos() {
+		return nos;
+	}
+
+	public void setNos(List<No> nos) {
+		this.nos = nos;
 	}	
+	
 }

@@ -19,5 +19,4 @@ public class Mindmapping extends Estrutura{
 	public void setRaiz(Conceito raiz) {
 		this.raiz = raiz;
 	}
-
 }

@@ -2,6 +2,7 @@ package brainstorming.controller;
 
 import java.io.File;
 import java.security.Principal;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ import brainstorming.model.Solicitacao;
 import brainstorming.model.User;
 import brainstorming.model.estrutura.Divisor;
 import brainstorming.model.estrutura.Estrutura;
+import brainstorming.model.estrutura.No;
 import brainstorming.model.estrutura.Step;
 import brainstorming.model.estrutura.Storyboard;
 import brainstorming.service.GrupoService;
@@ -66,23 +68,23 @@ public class SessaoController {
 		return pagina_retorno;
 	}
 	
-	@GetMapping("/{id}/ideias")
-	public String showIdeia(Model model, @PathVariable("id") Integer id, Principal principal) {
-		String pagina_retorno;
-		Sessao sessao = sessaoService.findOne(id).get();
-		List<Ideia> ideias = sessao.getIdeias();
-		User user = userService.findByEmail(principal.getName());
-		boolean ehAdmin = sessao.getGrupo().getAdministrador().getId() == user.getId();
-		boolean ehModerador = ehAdmin || sessao.getGrupo().getModeradores().contains(user);
-		model.addAttribute("ehModerador", ehModerador);
-		model.addAttribute("sessao", sessao);
-		model.addAttribute("ideias", ideias);
-		
-		pagina_retorno = "sessao/showIdeias";
-		
-		return pagina_retorno;
-		
-	}
+//	@GetMapping("/{id}/ideias")
+//	public String showIdeia(Model model, @PathVariable("id") Integer id, Principal principal) {
+//		String pagina_retorno;
+//		Sessao sessao = sessaoService.findOne(id).get();
+//		List<Ideia> ideias = sessao.getIdeias();
+//		User user = userService.findByEmail(principal.getName());
+//		boolean ehAdmin = sessao.getGrupo().getAdministrador().getId() == user.getId();
+//		boolean ehModerador = ehAdmin || sessao.getGrupo().getModeradores().contains(user);
+//		model.addAttribute("ehModerador", ehModerador);
+//		model.addAttribute("sessao", sessao);
+//		model.addAttribute("ideias", ideias);
+//		
+//		pagina_retorno = "sessao/showIdeias";
+//		
+//		return pagina_retorno;
+//		
+//	}
 	
 	@GetMapping("/{id}/solicitacoes")
 	public String showSolicitacoes(Model model, @PathVariable("id") Integer id, Principal principal) {
@@ -114,8 +116,19 @@ public class SessaoController {
 		
 		Grupo grupo = grupoService.findOne(id_grupo).get();
 		entitySessao.setGrupo(grupo);
+		
 		File f = new File("");
 		Estrutura estrutura = eFactory.create(f);
+		
+		//Temporario
+		User user = userService.findByEmail(principal.getName());
+		for (No no : estrutura.getNos()) {
+			for (Ideia ideia : no.getIdeias()) {
+				ideia.setAutor(user);
+			}
+		}
+		
+		
 		entitySessao.setEstrutura(estrutura);
 		try {
 			sessao = sessaoService.save(entitySessao);

@@ -22,8 +22,11 @@ import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
 import brainstorming.model.Sugestao;
 import brainstorming.model.User;
+import brainstorming.model.estrutura.No;
+import brainstorming.model.estrutura.Quadro;
 import brainstorming.model.Comentario;
 import brainstorming.service.IdeiaService;
+import brainstorming.service.NoService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.SugestaoService;
 import brainstorming.service.UserService;
@@ -46,7 +49,10 @@ public class IdeiaController {
 	@Autowired
 	private ComentarioService comentarioService;
 	
-	@Autowired SugestaoService sugestaoService;
+	@Autowired 
+	private SugestaoService sugestaoService;
+	
+	@Autowired NoService noService;
 	
 	@GetMapping("/{id}")
 	public String show(Model model,  @PathVariable("id") Integer id, Principal principal) {
@@ -63,21 +69,21 @@ public class IdeiaController {
 	}
 	
 	@GetMapping(value = "/new")
-	public String create(Model model, @RequestParam("id_sessao") Integer id_sessao, 
+	public String create(Model model, @RequestParam("id_no") Integer id_no, 
 							@ModelAttribute Ideia entityIdeia, @ModelAttribute Sessao entitySessao) {
-		model.addAttribute("id_sessao", id_sessao);
+		model.addAttribute("id_no", id_no);
 		
 		return "ideia/form";
 	}
 	
 	@PostMapping
 	public String create(@Valid @ModelAttribute Ideia entityIdeia, 
-						@RequestParam("id_sessao") Integer id_sessao, Principal principal,
+						@RequestParam("id_no") Integer id_no, Principal principal,
 						BindingResult result, RedirectAttributes redirectAttributes) {		
 		String pagina_retorno;
-		Sessao sessao = sessaoService.findOne(id_sessao).get();
+		No no = noService.findOne(id_no).get();
 		User user = userService.findByEmail(principal.getName());
-		entityIdeia.setSessao(sessao);
+		entityIdeia.setNo(no);
 		entityIdeia.setAutor(user);
 		Ideia ideia;
 		try {
@@ -86,7 +92,7 @@ public class IdeiaController {
 			pagina_retorno = "redirect:/ideias/" + ideia.getId();
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
-			pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";
+			pagina_retorno = "redirect:/ideias/new?id_no=" + id_no;
 		}
 		
 		
@@ -97,9 +103,9 @@ public class IdeiaController {
 	public String update(Model model, @PathVariable("id") Integer id, Principal principal) {
 		String pagina_retorno;
 		Ideia ideia = ideiaService.findOne(id).get();
-		Sessao sessao = ideia.getSessao();
+		No no = ideia.getNo();
 		model.addAttribute("ideia", ideia);
-		model.addAttribute("id_sessao", sessao.getId());
+		model.addAttribute("id_no", no.getId());
 		pagina_retorno = "ideia/form";
 	
 		return pagina_retorno;
@@ -107,11 +113,11 @@ public class IdeiaController {
 	
 	@PutMapping
 	public String update(@Valid @ModelAttribute Ideia entityIdeia, BindingResult result,
-						@RequestParam("id_sessao") Integer id_sessao, Principal principal,
+						@RequestParam("id_no") Integer id_no, Principal principal,
 						RedirectAttributes redirectAttributes) {
 		String pagina_retorno;		
 		Ideia ideia = ideiaService.findOne(entityIdeia.getId()).get();	
-		entityIdeia.setSessao(ideia.getSessao());
+		entityIdeia.setNo(ideia.getNo());
 		entityIdeia.setAutor(ideia.getAutor());
 		try {
 			ideia = ideiaService.save(entityIdeia);
@@ -119,7 +125,7 @@ public class IdeiaController {
 			pagina_retorno = "redirect:/ideias/" + ideia.getId();
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
-			pagina_retorno = "redirect:/sessoes/" + ideia.getSessao().getId() + "/ideias";
+			pagina_retorno = "redirect:/ideias/" + ideia.getId() + "/edit";
 		}
 		
 		return pagina_retorno;
@@ -130,7 +136,7 @@ public class IdeiaController {
 							RedirectAttributes redirectAttributes) {
 		String pagina_retorno;
 		Ideia ideia = ideiaService.findOne(id).get();
-		Sessao sessao = ideia.getSessao();
+		Sessao sessao = ideia.getNo().getEstrutura().getSessao();
 		ideiaService.delete(ideia);
 		redirectAttributes.addFlashAttribute("success", "Ideia removida com sucesso");
 		pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";

@@ -10,8 +10,9 @@ import brainstorming.model.Sugestao;
 
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Integer>{
 
-//	@Query("SELECT sol FROM Sessao ses INNER JOIN ses.ideias i INNER JOIN i.solicitacoes sol WHERE ses.id = ?1")
-//	List<Solicitacao> findBySessao(Integer id_sessao);
+	//@Query("SELECT sol FROM Sessao ses INNER JOIN ses.ideias i INNER JOIN i.solicitacoes sol WHERE ses.id = ?1")
+	@Query("SELECT sol FROM Sessao ses INNER JOIN ses.estrutura e INNER JOIN e.nos n INNER JOIN n.ideias i INNER JOIN i.solicitacoes sol WHERE ses.id = ?1")
+	List<Solicitacao> findBySessao(Integer id_sessao);
 	
 	boolean existsBySugestao(Sugestao sugestao);
 }
