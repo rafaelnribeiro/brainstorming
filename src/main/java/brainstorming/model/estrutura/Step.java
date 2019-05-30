@@ -1,6 +1,7 @@
 package brainstorming.model.estrutura;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -10,10 +11,10 @@ import javax.persistence.Table;
 public class Step extends No {
 	private static final long serialVersionUID = 1L;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Step left;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Step right;
 	
 	@OneToOne(mappedBy = "first")

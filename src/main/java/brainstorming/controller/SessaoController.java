@@ -21,12 +21,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import brainstorming.controller.estrutura_factory.DivisorFactory;
 import brainstorming.controller.estrutura_factory.EstruturaFactory;
+import brainstorming.controller.estrutura_factory.StoryboardFactory;
 import brainstorming.model.Grupo;
 import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
 import brainstorming.model.Solicitacao;
 import brainstorming.model.User;
+import brainstorming.model.estrutura.Divisor;
 import brainstorming.model.estrutura.Estrutura;
+import brainstorming.model.estrutura.Step;
+import brainstorming.model.estrutura.Storyboard;
 import brainstorming.service.GrupoService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.SolicitacaoService;
@@ -46,14 +50,24 @@ public class SessaoController {
 	
 	@Autowired SolicitacaoService solicitacaoService;
 	
-	@GetMapping("/{id}/estrutura")
-	public String showEstrutura(Model model, @PathVariable("id") Integer id, Principal principal) {
+	@GetMapping("/{id}/show")
+	public String show(Model model, @PathVariable("id") Integer id, Principal principal) {
+		String pagina_retorno;
+		Sessao sessao = sessaoService.findOne(id).get();
+		Divisor divisor = (Divisor)sessao.getEstrutura();	
+		User user = userService.findByEmail(principal.getName());
+		boolean ehAdmin = sessao.getGrupo().getAdministrador().getId() == user.getId();
+		boolean ehModerador = ehAdmin || sessao.getGrupo().getModeradores().contains(user);
+		model.addAttribute("ehModerador", ehModerador);
+		model.addAttribute("sessao", sessao);
+		model.addAttribute("divisor", divisor);
+		pagina_retorno = "sessao/show";
 		
-		return "";
+		return pagina_retorno;
 	}
 	
 	@GetMapping("/{id}/ideias")
-	public String show(Model model, @PathVariable("id") Integer id, Principal principal) {
+	public String showIdeia(Model model, @PathVariable("id") Integer id, Principal principal) {
 		String pagina_retorno;
 		Sessao sessao = sessaoService.findOne(id).get();
 		List<Ideia> ideias = sessao.getIdeias();
@@ -106,12 +120,11 @@ public class SessaoController {
 		try {
 			sessao = sessaoService.save(entitySessao);
 			redirectAttributes.addFlashAttribute("success", "Sessão adicionada com sucesso");
-			pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/ideias";
+			pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/show";
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
 			pagina_retorno = "redirect:/grupos/" + id_grupo + "/sessoes";
 		}
-		
 		
 		return pagina_retorno;
 	}

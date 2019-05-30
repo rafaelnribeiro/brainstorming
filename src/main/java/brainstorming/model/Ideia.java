@@ -122,4 +122,13 @@ public class Ideia implements Serializable{
 	public void setSugestoes(List<Sugestao> sugestoes) {
 		this.sugestoes = sugestoes;
 	}
+
+	public No getNo() {
+		return no;
+	}
+
+	public void setNo(No no) {
+		this.no = no;
+	}
+	
 }

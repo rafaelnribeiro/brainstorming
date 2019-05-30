@@ -1,6 +1,5 @@
 package brainstorming.model.estrutura;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,7 +10,7 @@ import javax.persistence.Table;
 public class Quadro extends No{
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "id_divisor")
 	private Divisor divisor;
 
