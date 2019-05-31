@@ -1,9 +1,9 @@
 package brainstorming.controller.estrutura_factory;
 
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
 
 import brainstorming.model.estrutura.Estrutura;
 
 public interface EstruturaFactory {
-	public Estrutura create(File f);
+	public Estrutura create(MultipartFile f);
 }

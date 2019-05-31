@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import brainstorming.controller.estrutura_factory.DivisorFactory;
@@ -109,7 +110,7 @@ public class SessaoController {
 	
 	@PostMapping
 	public String create(@Valid @ModelAttribute Sessao entitySessao, Principal principal,
-						@RequestParam("id_grupo") Integer id_grupo, 
+						@RequestParam("id_grupo") Integer id_grupo, @RequestParam("file") MultipartFile file, 
 						BindingResult result, RedirectAttributes redirectAttributes) {
 		Sessao sessao = null;
 		String pagina_retorno;
@@ -117,8 +118,7 @@ public class SessaoController {
 		Grupo grupo = grupoService.findOne(id_grupo).get();
 		entitySessao.setGrupo(grupo);
 		
-		File f = new File("");
-		Estrutura estrutura = eFactory.create(f);
+		Estrutura estrutura = eFactory.create(file);
 		
 		//Temporario
 		User user = userService.findByEmail(principal.getName());
@@ -126,8 +126,7 @@ public class SessaoController {
 			for (Ideia ideia : no.getIdeias()) {
 				ideia.setAutor(user);
 			}
-		}
-		
+		}		
 		
 		entitySessao.setEstrutura(estrutura);
 		try {

@@ -1,11 +1,7 @@
 package brainstorming.controller.estrutura_factory;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import org.springframework.web.multipart.MultipartFile;
 
 import brainstorming.model.Ideia;
 import brainstorming.model.estrutura.Divisor;
@@ -15,7 +11,7 @@ import brainstorming.model.estrutura.Quadro;
 
 public class DivisorFactory implements EstruturaFactory{
 	
-	public Estrutura create(File f) {
+	public Estrutura create(MultipartFile f) {
 		//Temporario
 		Divisor e = new Divisor();
 		Quadro q1 = new Quadro();

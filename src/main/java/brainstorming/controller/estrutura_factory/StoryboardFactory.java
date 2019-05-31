@@ -1,6 +1,6 @@
 package brainstorming.controller.estrutura_factory;
 
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
 
 import brainstorming.model.estrutura.Estrutura;
 import brainstorming.model.estrutura.Step;
@@ -8,7 +8,7 @@ import brainstorming.model.estrutura.Storyboard;
 
 public class StoryboardFactory implements EstruturaFactory {
 
-	public Estrutura create(File f) {
+	public Estrutura create(MultipartFile f) {
 		// TODO Temporario
 		Storyboard e = new Storyboard();
 		Step s1 = new Step();

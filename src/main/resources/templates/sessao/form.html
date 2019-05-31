@@ -16,7 +16,7 @@
 		<h1 th:if="${sessao.id == null}">Nova Sessão</h1>
 		<h1 th:if="${sessao.id != null}">Editar Sessão</h1>
 		<hr />
-		<form th:action="@{/sessoes}"
+		<form th:action="@{/sessoes}" enctype="multipart/form-data"
 			th:method="@{${sessao.id == null} ? 'post' : 'put'}"
 			th:object="${sessao}">
 			<input type="hidden" th:field="*{id}" />
@@ -30,6 +30,11 @@
 				<label for="detalhes">Detalhes</label> <textarea id="detalhes" name="detalhes"
 					rows="7" class="form-control" th:field="*{detalhes}"></textarea>
 			</div>
+			
+			<div class="form-group">
+				<label for="detalhes">Arquivo de Configuração:</label>
+				<input name="file" type="file">
+			</div>			
 						
 			<input id="id_grupo" name="id_grupo" type="hidden" th:value="${id_grupo}">
 			
