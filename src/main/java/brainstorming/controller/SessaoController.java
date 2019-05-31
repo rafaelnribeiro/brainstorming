@@ -1,8 +1,7 @@
 package brainstorming.controller;
 
-import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -23,17 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import brainstorming.controller.estrutura_factory.DivisorFactory;
 import brainstorming.controller.estrutura_factory.EstruturaFactory;
-import brainstorming.controller.estrutura_factory.StoryboardFactory;
 import brainstorming.model.Grupo;
-import brainstorming.model.Ideia;
 import brainstorming.model.Sessao;
 import brainstorming.model.Solicitacao;
 import brainstorming.model.User;
 import brainstorming.model.estrutura.Divisor;
 import brainstorming.model.estrutura.Estrutura;
-import brainstorming.model.estrutura.No;
-import brainstorming.model.estrutura.Step;
-import brainstorming.model.estrutura.Storyboard;
 import brainstorming.service.GrupoService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.SolicitacaoService;
@@ -56,36 +50,21 @@ public class SessaoController {
 	@GetMapping("/{id}/show")
 	public String show(Model model, @PathVariable("id") Integer id, Principal principal) {
 		String pagina_retorno;
-		Sessao sessao = sessaoService.findOne(id).get();
-		Divisor divisor = (Divisor)sessao.getEstrutura();	
+		Sessao sessao = sessaoService.findOne(id).get();		
 		User user = userService.findByEmail(principal.getName());
 		boolean ehAdmin = sessao.getGrupo().getAdministrador().getId() == user.getId();
 		boolean ehModerador = ehAdmin || sessao.getGrupo().getModeradores().contains(user);
 		model.addAttribute("ehModerador", ehModerador);
 		model.addAttribute("sessao", sessao);
+		
+		//Parte específica de Divisor
+		Divisor divisor = (Divisor)sessao.getEstrutura();
 		model.addAttribute("divisor", divisor);
+		
 		pagina_retorno = "sessao/show";
 		
 		return pagina_retorno;
 	}
-	
-//	@GetMapping("/{id}/ideias")
-//	public String showIdeia(Model model, @PathVariable("id") Integer id, Principal principal) {
-//		String pagina_retorno;
-//		Sessao sessao = sessaoService.findOne(id).get();
-//		List<Ideia> ideias = sessao.getIdeias();
-//		User user = userService.findByEmail(principal.getName());
-//		boolean ehAdmin = sessao.getGrupo().getAdministrador().getId() == user.getId();
-//		boolean ehModerador = ehAdmin || sessao.getGrupo().getModeradores().contains(user);
-//		model.addAttribute("ehModerador", ehModerador);
-//		model.addAttribute("sessao", sessao);
-//		model.addAttribute("ideias", ideias);
-//		
-//		pagina_retorno = "sessao/showIdeias";
-//		
-//		return pagina_retorno;
-//		
-//	}
 	
 	@GetMapping("/{id}/solicitacoes")
 	public String showSolicitacoes(Model model, @PathVariable("id") Integer id, Principal principal) {
@@ -112,32 +91,26 @@ public class SessaoController {
 	public String create(@Valid @ModelAttribute Sessao entitySessao, Principal principal,
 						@RequestParam("id_grupo") Integer id_grupo, @RequestParam("file") MultipartFile file, 
 						BindingResult result, RedirectAttributes redirectAttributes) {
-		Sessao sessao = null;
 		String pagina_retorno;
-		
+		Sessao sessao = null;
+		Estrutura estrutura = null;
 		Grupo grupo = grupoService.findOne(id_grupo).get();
 		entitySessao.setGrupo(grupo);
 		
-		Estrutura estrutura = eFactory.create(file);
-		
-		//Temporario
-		User user = userService.findByEmail(principal.getName());
-		for (No no : estrutura.getNos()) {
-			for (Ideia ideia : no.getIdeias()) {
-				ideia.setAutor(user);
-			}
-		}		
-		
-		entitySessao.setEstrutura(estrutura);
 		try {
+			estrutura = eFactory.create(file);
+			entitySessao.setEstrutura(estrutura);
 			sessao = sessaoService.save(entitySessao);
 			redirectAttributes.addFlashAttribute("success", "Sessão adicionada com sucesso");
 			pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/show";
+		} catch (IOException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			pagina_retorno = "redirect:/grupos/" + id_grupo + "/sessoes";
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
 			pagina_retorno = "redirect:/grupos/" + id_grupo + "/sessoes";
 		}
-		
+
 		return pagina_retorno;
 	}
 	
@@ -156,10 +129,10 @@ public class SessaoController {
 	public String update(@Valid @ModelAttribute Sessao entitySessao, BindingResult result,
 						RedirectAttributes redirectAttributes) {
 		String pagina_retorno;
-
 		Sessao sessao = sessaoService.findOne(entitySessao.getId()).get();
 		sessao.setDetalhes(entitySessao.getDetalhes());
 		sessao.setTema(entitySessao.getTema());
+		
 		try {
 			sessaoService.save(sessao);
 			redirectAttributes.addFlashAttribute("success", "Sessão atualizada com sucesso");

@@ -29,7 +29,7 @@
 				<span th:text="${ideia.descricao}"></span>
 			</div>
 	
-			<a class="btn btn-default">Voltar</a>
+			<a th:href="@{/sessoes/{id}/show(id = ${ideia.no.estrutura.sessao.id})}" class="btn btn-default">Voltar</a>
 			<a th:if="not ${ehAutor}" th:href="@{/ideias/{id}/comment(id = ${ideia.id})}" class="btn btn-default">Adicionar Comentário</a>
 			<a th:if="not ${ehAutor}" th:href="@{/ideias/{id}/suggest(id = ${ideia.id})}" class="btn btn-default">Adicionar Sugestão</a>
 			<a th:if="not ${ehAutor} and not ${ehVotante}" th:href="@{/ideias/{id}/vote(id = ${ideia.id})}" class="btn btn-info">Votar</a>
