@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import brainstorming.model.Grupo;
+import brainstorming.model.Participacao;
 import brainstorming.model.Sessao;
 import brainstorming.model.User;
 import brainstorming.service.GrupoService;
@@ -134,6 +135,22 @@ public class GrupoController {
 		return pagina_retorno;
 	}
 	
+	@GetMapping("/{id}/ranking")
+	public String showRanking(Model model, @PathVariable("id") Integer id, Principal principal) {
+		String pagina_retorno;
+		Grupo grupo = grupoService.findOne(id).get();	
+		User user = userService.findByEmail(principal.getName());
+		boolean ehAdmin = grupo.getAdministrador().getId().equals(user.getId());
+		List<Participacao> participacoes = grupo.getParticipacoes();
+		model.addAttribute("grupo", grupo);
+		model.addAttribute("participacoes", participacoes);
+		model.addAttribute("ehAdmin", ehAdmin);
+		pagina_retorno = "grupo/showRanking";	
+		
+		return pagina_retorno;
+	}
+	
+	
 	@GetMapping("/{id}/addParticipante")
 	public String addParticipante(Model model, @PathVariable("id") Integer id) {
 		String pagina_retorno;
@@ -149,8 +166,8 @@ public class GrupoController {
 									BindingResult result, RedirectAttributes redirectAttributes) {
 		String pagina_retorno;
 		Grupo grupo = grupoService.findOne(id).get();
-		User participante = userService.findByEmail(email);
 		try {
+			User participante = userService.findIfExistsByEmail(email);
 			grupoService.addParticipacao(grupo, participante);
 			redirectAttributes.addFlashAttribute("success", "Usuário adicionado com sucesso");
 			pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/participantes";

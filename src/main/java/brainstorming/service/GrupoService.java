@@ -41,6 +41,7 @@ public class GrupoService {
 			throw new BusinessException("Nome do grupo já existe");
 		}
 		return grupoRepository.save(entity);
+		
 	}
 	
 	@Transactional(readOnly = false)

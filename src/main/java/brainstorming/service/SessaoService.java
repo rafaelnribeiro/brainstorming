@@ -6,16 +6,25 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import brainstorming.model.Participacao;
 import brainstorming.model.Sessao;
+import brainstorming.repository.ParticipacaoRepository;
 import brainstorming.repository.SessaoRepository;
+import brainstorming.service.rankingStrategy.RankingQuantitative;
+import brainstorming.service.rankingStrategy.RankingStrategy;
 import brainstorming.util.exceptions.BusinessException;
 
 @Service
 @Transactional(readOnly = true)
 public class SessaoService {
+	RankingStrategy rankingStrategy = new RankingQuantitative();
 
 	@Autowired
 	private SessaoRepository sessaoRepository;
+	
+	@Autowired
+	private ParticipacaoRepository participacaoRepository;
 	
 	public List<Sessao> findAll() {
 		return sessaoRepository.findAll();
@@ -36,6 +45,17 @@ public class SessaoService {
 		}
 			
 		return sessaoRepository.save(entity);
+	}
+	
+	@Transactional(readOnly = false)
+	public void finalizarSessao(Sessao sessao) {
+		Sessao s = sessaoRepository.findById(sessao.getId()).get();
+		
+		rankingStrategy.updateRanking(s.getGrupo(), s);
+		for (Participacao p : s.getGrupo().getParticipacoes()) {
+			participacaoRepository.save(p);
+		}
+		
 	}
 	
 	@Transactional(readOnly = false)

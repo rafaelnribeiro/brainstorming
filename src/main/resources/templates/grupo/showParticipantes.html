@@ -7,14 +7,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<meta name="description" content="" />
 		<meta name="author" content="" />
-		<title>Sessão</title>
+		<title>Participantes</title>
 	</head>
 	<body>
 		<div layout:fragment="content">
 			<div class='page-header'>
 			  <div class='btn-toolbar pull-right'>
 			    <div class='btn-group'>
+			    	<a th:href="@{/grupos/{id}/participantes(id = ${grupo.id})}" type="button" class="btn btn-default">Participantes</a>
 			    	<a th:href="@{/grupos/{id}/sessoes(id = ${grupo.id})}" type="button" class="btn btn-default">Sessões</a>
+			    	<a th:href="@{/grupos/{id}/ranking(id = ${grupo.id})}" type="button" class="btn btn-default">Ranking</a>
 					<a th:if="${ehAdmin}" type='button' class='btn btn-default' th:href="@{/grupo/{id}/edit(id = ${grupo.id})}">Editar</a>
 				    <a th:if="${ehAdmin}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvGrupoModel">Remover</a>
 					<div th:if="${ehAdmin}" class="modal fade" id="rmvGrupoModel" tabindex="-1" role="dialog" aria-labelledby="rmvGrupoModelLabel" aria-hidden="true">

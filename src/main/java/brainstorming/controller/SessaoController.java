@@ -76,6 +76,8 @@ public class SessaoController {
 		model.addAttribute("ehModerador", ehModerador);
 		model.addAttribute("solicitacoes", solicitacoes);
 		model.addAttribute("sessao", sessao);
+		
+		sessaoService.finalizarSessao(sessao);	
 				
 		return "sessao/showSolicitacoes";
 	}

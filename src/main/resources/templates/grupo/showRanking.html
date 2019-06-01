@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<meta name="description" content="" />
 		<meta name="author" content="" />
-		<title>Grupo</title>
+		<title>Ranking</title>
 	</head>
 	<body>
 		<div layout:fragment="content">
@@ -17,8 +17,8 @@
 			    	<a th:href="@{/grupos/{id}/participantes(id = ${grupo.id})}" type="button" class="btn btn-default">Participantes</a>
 			    	<a th:href="@{/grupos/{id}/sessoes(id = ${grupo.id})}" type="button" class="btn btn-default">Sessões</a>
 			    	<a th:href="@{/grupos/{id}/ranking(id = ${grupo.id})}" type="button" class="btn btn-default">Ranking</a>
-					<a th:if="${ehAdmin}" type='button' class='btn btn-default' th:href="@{/grupos/{id}/edit(id = ${grupo.id})}">Editar</a>
-				   	<a th:if="${ehAdmin}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvGrupoModel">Remover</a>
+					<a th:if="${ehAdmin}" type='button' class='btn btn-default' th:href="@{/grupo/{id}/edit(id = ${grupo.id})}">Editar</a>
+				    <a th:if="${ehAdmin}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvGrupoModel">Remover</a>
 					<div th:if="${ehAdmin}" class="modal fade" id="rmvGrupoModel" tabindex="-1" role="dialog" aria-labelledby="rmvGrupoModelLabel" aria-hidden="true">
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
@@ -29,7 +29,7 @@
 					        </button>
 					      </div>
 					      <div class="modal-body">
-					       Você realmente deseja remover o grupo?
+					       Você realmente deseja remover o Grupo?
 					      </div>
 					      <div class="modal-footer">
 					        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -41,28 +41,23 @@
 			    </div>
 			  </div>
 			  <h3 th:text="${grupo.nome}"></h3>
-			</div>
-							
 			<div class="form-group">
-				<label for="tema">Administrador: </label>
-				<span th:text="${grupo.administrador.name}"></span>
-			</div>
-			<div class="form-group">
-				<label for="detalhes">Sessoes: </label>
+				<label for="detalhes">Ranking: </label>
 			</div>			
 			<table class="table">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Pontuação</th>
+					</tr>
+				</thead>
 				<tbody>
-					<tr th:each="sessao : ${sessoes}">
-						<td th:text="${sessao.tema}"></td>
-						<td class="text-right">
-							<a th:href="@{/sessoes/{id}/show(id = ${sessao.id})}" class="btn btn-primary">Exibir</a>
-						</td>
+					<tr th:each="participacao : ${participacoes}">
+						<td th:text="${participacao.participante.name}"></td>
+						<td th:text="${participacao.pontos}"></td>
 					</tr>					
 				</tbody>
 			</table>
-			<div class="form-group">
-				<a th:if="${ehAdmin}" th:href="@{/sessoes/new?id_grupo={id}(id = ${grupo.id})}" class="btn btn-success">Nova Sessão</a>
-			</div>
 		</div>
 	</body>
 </html>

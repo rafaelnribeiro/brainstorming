@@ -40,6 +40,14 @@ public class UserService {
 		return userRepository.findByEmail(email);
 	}
 	
+	public User findIfExistsByEmail(String email) throws BusinessException {
+		User user = userRepository.findByEmail(email);
+		if(user == null) {
+			throw new BusinessException("Não existe nenhum usuário cadastrado com esse Email");
+		}
+		return user;
+	}
+	
 	@Transactional(readOnly = false, rollbackFor = BusinessException.class)
 	public User save(User entity) throws BusinessException {
 		if (entity.getName().trim().isEmpty()) {
