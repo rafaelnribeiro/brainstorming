@@ -1,6 +1,7 @@
 package brainstorming.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -33,9 +34,8 @@ public class Grupo implements Serializable{
 	@JoinColumn(name = "id_administrador")
 	private User administrador;
 	
-	@ManyToMany
-	@JoinTable(name = "participante_grupo")
-	private List<User> participantes;
+	@OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL)
+	private List<Participacao> participacoes;
 	
 	@ManyToMany
 	@JoinTable(name = "moderador_grupo")
@@ -69,14 +69,6 @@ public class Grupo implements Serializable{
 		this.administrador = administrador;
 	}
 
-	public List<User> getParticipantes() {
-		return participantes;
-	}
-
-	public void setParticipantes(List<User> participantes) {
-		this.participantes = participantes;
-	}
-
 	public List<Sessao> getSessoes() {
 		return sessoes;
 	}
@@ -93,6 +85,21 @@ public class Grupo implements Serializable{
 		this.moderadores = moderadores;
 	}
 
+	public List<Participacao> getParticipacoes() {
+		return participacoes;
+	}
+
+	public void setParticipacoes(List<Participacao> participacoes) {
+		this.participacoes = participacoes;
+	}
+	
+	public List<User> getParticipantes(){
+		List<User> u = new ArrayList<User>();
+		for (Participacao part : this.participacoes) {
+			u.add(part.getParticipante());
+		}
+		return u;
+	}
 
 	@Override
 	public String toString() {

@@ -1,6 +1,7 @@
 package brainstorming.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class User implements Serializable {
 	
 	@Column(name = "active")
 	private int active;
-	
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), 
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -47,8 +48,8 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
 	private List<Ideia> Ideias;
 	
-	@ManyToMany(mappedBy = "participantes")
-	private List<Grupo> grupos;
+	@OneToMany(mappedBy = "participante", cascade = CascadeType.ALL)
+	private List<Participacao> participacoes;
 	
 	@ManyToMany(mappedBy = "moderadores")
 	private List<Grupo> gruposModerados;
@@ -117,14 +118,6 @@ public class User implements Serializable {
 	public void setIdeias(List<Ideia> ideias) {
 		Ideias = ideias;
 	}
-	
-	public List<Grupo> getGrupos() {
-		return grupos;
-	}
-
-	public void setGrupos(List<Grupo> grupos) {
-		this.grupos = grupos;
-	}
 
 	public List<Grupo> getGruposAdministrados() {
 		return gruposAdministrados;
@@ -148,6 +141,30 @@ public class User implements Serializable {
 
 	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	public List<Ideia> getIdeiasVotadas() {
+		return ideiasVotadas;
+	}
+
+	public void setIdeiasVotadas(List<Ideia> ideiasVotadas) {
+		this.ideiasVotadas = ideiasVotadas;
+	}
+
+	public List<Participacao> getParticipacoes() {
+		return participacoes;
+	}
+
+	public void setParticipacoes(List<Participacao> participacoes) {
+		this.participacoes = participacoes;
+	}
+	
+	public List<Grupo> getGrupos() {
+		List<Grupo> g = new ArrayList<Grupo>();
+		for (Participacao part : this.participacoes) {
+			g.add(part.getGrupo());
+		}
+		return g;
 	}
 
 	@Override

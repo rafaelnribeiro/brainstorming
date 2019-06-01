@@ -151,7 +151,7 @@ public class GrupoController {
 		Grupo grupo = grupoService.findOne(id).get();
 		User participante = userService.findByEmail(email);
 		try {
-			grupoService.addParticipante(grupo, participante);
+			grupoService.addParticipacao(grupo, participante);
 			redirectAttributes.addFlashAttribute("success", "Usuário adicionado com sucesso");
 			pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/participantes";
 		} catch (BusinessException e) {
@@ -167,7 +167,7 @@ public class GrupoController {
 		String pagina_retorno;
 		Grupo grupo = grupoService.findOne(id).get();
 		User participante = userService.findOne(id_participante).get();
-		grupoService.rmvParticipante(grupo, participante);
+		grupoService.rmvParticipacao(grupo, participante);
 		redirectAttributes.addFlashAttribute("success", "Usuário Removido com Sucesso");
 		pagina_retorno = "redirect:/grupos/" + grupo.getId() + "/participantes";
 		

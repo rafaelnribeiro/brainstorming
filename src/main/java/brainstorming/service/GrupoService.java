@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import brainstorming.model.Grupo;
+import brainstorming.model.Participacao;
 import brainstorming.model.User;
 import brainstorming.repository.GrupoRepository;
+import brainstorming.repository.ParticipacaoRepository;
 import brainstorming.util.exceptions.BusinessException;
 
 @Service
@@ -19,6 +21,9 @@ public class GrupoService {
 	@Autowired
 	private GrupoRepository grupoRepository;
 	
+	@Autowired
+	private ParticipacaoRepository participacaoRepository;
+		
 	public List<Grupo> findAll() {
 		return grupoRepository.findAll();
 	}
@@ -44,20 +49,27 @@ public class GrupoService {
 	}
 	
 	@Transactional(readOnly = false)
-	public void addParticipante(Grupo entity, User participante) throws BusinessException{
+	public void addParticipacao(Grupo entity, User participante) throws BusinessException{
 		if (entity.getParticipantes().contains(participante)) {
 			throw new BusinessException("Usuário já pertence ao grupo");
 		}
-		entity.getParticipantes().add(participante);
-		grupoRepository.save(entity);
+		Participacao p = new Participacao();
+		p.setGrupo(entity);
+		p.setParticipante(participante);
+		p.setPontos(0);
+		participacaoRepository.save(p);
 	}
 	
 	@Transactional(readOnly = false)
-	public void rmvParticipante(Grupo entity, User participante){
+	public void rmvParticipacao(Grupo entity, User participante){
 		entity.getModeradores().remove(participante);
-		entity.getParticipantes().remove(participante);
-	
-		grupoRepository.save(entity);
+		for (Participacao p : entity.getParticipacoes()) {
+			if(p.getParticipante().getId() == participante.getId()) {
+				entity.getParticipacoes().remove(p);
+				participacaoRepository.delete(p);
+				break;
+			}
+		}	
 	}
 	
 	@Transactional(readOnly = false)
