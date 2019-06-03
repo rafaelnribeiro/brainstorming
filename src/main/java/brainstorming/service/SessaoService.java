@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import brainstorming.model.Ideia;
 import brainstorming.model.Participacao;
 import brainstorming.model.Sessao;
 import brainstorming.repository.ParticipacaoRepository;
 import brainstorming.repository.SessaoRepository;
+import brainstorming.service.SolucaoStrategy.SolucaoMaisVotada;
+import brainstorming.service.SolucaoStrategy.SolucaoStrategy;
 import brainstorming.service.rankingStrategy.RankingQuantitative;
 import brainstorming.service.rankingStrategy.RankingStrategy;
 import brainstorming.util.exceptions.BusinessException;
@@ -19,6 +22,7 @@ import brainstorming.util.exceptions.BusinessException;
 @Transactional(readOnly = true)
 public class SessaoService {
 	RankingStrategy rankingStrategy = new RankingQuantitative();
+	SolucaoStrategy solucaoStrategy = new SolucaoMaisVotada();
 
 	@Autowired
 	private SessaoRepository sessaoRepository;
@@ -47,14 +51,22 @@ public class SessaoService {
 		return sessaoRepository.save(entity);
 	}
 	
-	@Transactional(readOnly = false)
-	public void finalizarSessao(Sessao sessao) {
+	@Transactional(readOnly = false, rollbackFor = BusinessException.class)
+	public void finalizarSessao(Sessao sessao) throws BusinessException {
 		Sessao s = sessaoRepository.findById(sessao.getId()).get();
 		
 		rankingStrategy.updateRanking(s.getGrupo(), s);
 		for (Participacao p : s.getGrupo().getParticipacoes()) {
 			participacaoRepository.save(p);
 		}
+		
+		/*adicionar SolucaoStrategy e passar o retorno pra Solucao da Sessao.*/
+		List<Ideia> solution =  solucaoStrategy.calcSolucao(s);
+		
+		/*Setar finalizada para true*/
+		s.setFinalizado(true);
+		
+		save(s);
 		
 	}
 	

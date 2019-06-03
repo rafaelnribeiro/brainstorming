@@ -32,12 +32,16 @@ import brainstorming.service.GrupoService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.SolicitacaoService;
 import brainstorming.service.UserService;
+import brainstorming.service.SolucaoStrategy.SolucaoMaisVotada;
+import brainstorming.service.SolucaoStrategy.SolucaoStrategy;
 import brainstorming.util.exceptions.BusinessException;
 
 @Controller
 @RequestMapping("/sessoes")
 public class SessaoController {
 	EstruturaFactory eFactory = new DivisorFactory();
+	
+	SolucaoStrategy eStrategy = new SolucaoMaisVotada();
 	
 	@Autowired SessaoService sessaoService;
 	
@@ -77,7 +81,12 @@ public class SessaoController {
 		model.addAttribute("solicitacoes", solicitacoes);
 		model.addAttribute("sessao", sessao);
 		
-		sessaoService.finalizarSessao(sessao);	
+		try {
+			sessaoService.finalizarSessao(sessao);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 				
 		return "sessao/showSolicitacoes";
 	}

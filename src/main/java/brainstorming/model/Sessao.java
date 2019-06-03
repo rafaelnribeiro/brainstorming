@@ -1,6 +1,7 @@
 package brainstorming.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -34,15 +36,35 @@ public class Sessao implements Serializable{
 	@Column(name = "limite_ideias")
 	private Integer limite_ideias;
 	
-//	@OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL)
-//	private List<Ideia> ideias;
+	@Column(name = "finalizado")
+	private boolean finalizado;
+
 	
+	public Boolean getFinalizado() {
+		return finalizado;
+	}
+
+	public void setFinalizado(boolean finalizado) {
+		this.finalizado = finalizado;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "id_grupo")
 	private Grupo grupo;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Estrutura estrutura;
+	
+	@OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL)
+	private List<Ideia> solucao;
+
+	public List<Ideia> getSolucao() {
+		return solucao;
+	}
+
+	public void setSolucao(List<Ideia> solucao) {
+		this.solucao = solucao;
+	}
 
 	public Integer getId() {
 		return id;
@@ -68,13 +90,6 @@ public class Sessao implements Serializable{
 		this.detalhes = detalhes;
 	}
 
-//	public List<Ideia> getIdeias() {
-//		return ideias;
-//	}
-//
-//	public void setIdeias(List<Ideia> ideias) {
-//		this.ideias = ideias;
-//	}
 
 	public Grupo getGrupo() {
 		return grupo;

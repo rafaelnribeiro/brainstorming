@@ -38,13 +38,15 @@ public class Ideia implements Serializable{
 	@JoinColumn(name = "id_usuario")
 	private User autor;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "id_sessao")
-//	private Sessao sessao;
+	/*Tinha ja esse pra fazer a relação ideia-sessao, usei ele msm*/
+	@ManyToOne
+	@JoinColumn(name = "id_sessao")
+	private Sessao sessao;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_no")
 	private No no;
+	
 	
 	@OneToMany(mappedBy = "ideia", cascade = CascadeType.ALL)
 	private List<Comentario> comentarios;
