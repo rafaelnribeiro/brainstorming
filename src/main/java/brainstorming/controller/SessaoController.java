@@ -41,8 +41,6 @@ import brainstorming.util.exceptions.BusinessException;
 public class SessaoController {
 	EstruturaFactory eFactory = new DivisorFactory();
 	
-	SolucaoStrategy eStrategy = new SolucaoMaisVotada();
-	
 	@Autowired SessaoService sessaoService;
 	
 	@Autowired GrupoService grupoService;
