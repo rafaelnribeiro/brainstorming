@@ -60,13 +60,14 @@ public class SessaoService {
 			participacaoRepository.save(p);
 		}
 		
-		/*adicionar SolucaoStrategy e passar o retorno pra Solucao da Sessao.*/
-		List<Ideia> solution =  solucaoStrategy.calcSolucao(s);
+		List<Ideia> solucao =  solucaoStrategy.calcSolucao(s);
 		
-		/*Setar finalizada para true*/
-		s.setFinalizado(true);
-		
-		save(s);
+		for (Ideia ideia : solucao) {
+			ideia.setSessaoSolucionada(s);
+		}		
+		s.setSolucao(solucao);		
+		s.setFinalizado(true);		
+		sessaoRepository.save(s);
 		
 	}
 	

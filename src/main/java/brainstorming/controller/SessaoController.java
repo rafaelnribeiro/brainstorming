@@ -79,16 +79,22 @@ public class SessaoController {
 		boolean ehModerador = ehAdmin || sessao.getGrupo().getModeradores().contains(user);
 		model.addAttribute("ehModerador", ehModerador);
 		model.addAttribute("solicitacoes", solicitacoes);
-		model.addAttribute("sessao", sessao);
-		
-		try {
-			sessaoService.finalizarSessao(sessao);
-		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		model.addAttribute("sessao", sessao);	
 				
 		return "sessao/showSolicitacoes";
+	}
+	
+	@GetMapping("/{id}/finalizar")
+	public String finalizar(Model model, @PathVariable("id") Integer id, 
+							RedirectAttributes redirectAttributes) {
+		Sessao sessao = sessaoService.findOne(id).get();
+		try {
+			sessaoService.finalizarSessao(sessao);
+			redirectAttributes.addFlashAttribute("success", "Sessão finalizada");
+		} catch (BusinessException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+		}		
+		return "redirect:/sessoes/" + sessao.getId() + "/show";
 	}
 	
 	@GetMapping(value = "/new")

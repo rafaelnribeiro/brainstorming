@@ -55,7 +55,7 @@ public class Sessao implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL)
 	private Estrutura estrutura;
 	
-	@OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sessaoSolucionada", cascade = CascadeType.ALL)
 	private List<Ideia> solucao;
 
 	public List<Ideia> getSolucao() {
@@ -113,5 +113,6 @@ public class Sessao implements Serializable{
 
 	public void setEstrutura(Estrutura estrutura) {
 		this.estrutura = estrutura;
-	}	
+	}
+	
 }

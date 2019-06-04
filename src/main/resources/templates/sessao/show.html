@@ -14,8 +14,9 @@
 			<div class='page-header'>
 			  <div class='btn-toolbar pull-right'>
 			    <div class='btn-group'>
-			    	<a th:if="${ehModerador}" type='button' class='btn btn-default' th:href="@{/sessoes/{id}/solicitacoes(id = ${sessao.id})}">Solicitações de Alteração</a>
-					<a th:if="${ehModerador}" type='button' class='btn btn-default' th:href="@{/sessoes/{id}/edit(id = ${sessao.id})}">Editar Sessão</a>
+			    	<a th:if="${ehModerador} and not ${sessao.finalizado}" type='button' class='btn btn-default' th:href="@{/sessoes/{id}/solicitacoes(id = ${sessao.id})}">Solicitações de Alteração</a>
+					<a th:if="${ehModerador} and not ${sessao.finalizado}" type='button' class='btn btn-default' th:href="@{/sessoes/{id}/edit(id = ${sessao.id})}">Editar Sessão</a>
+				   	<a th:if="${ehModerador} and not ${sessao.finalizado}" type='button' class='btn btn-default' th:href="@{/sessoes/{id}/finalizar(id = ${sessao.id})}">Finalizar Sessão</a>
 				   	<a th:if="${ehModerador}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rmvSessaoModel">Remover Sessão</a>
 					<div th:if="${ehModerador}" class="modal fade" id="rmvSessaoModel" tabindex="-1" role="dialog" aria-labelledby="rmvSessaoModelLabel" aria-hidden="true">
 					  <div class="modal-dialog" role="document">
@@ -45,23 +46,42 @@
 			  </h3>
 			</div>
 			<div class="container">
-				<label for="detalhes">Detalhes: </label><br>
-				<span th:text="${sessao.detalhes}"></span>	
-				<div class="container">
-					<div class="row">
-						<div class="col" th:each="quadro : ${divisor.quadros}">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<label for="detalhes">Detalhes: </label>
+						<span th:text="${sessao.detalhes}"></span>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 th:if="not ${sessao.finalizado}" class="panel-title">Quadros e Ideias</h3>
+						<h3 th:if="${sessao.finalizado}" class="panel-title">Ideias Selecionadas como Solução</h3>						
+					</div>
+					<div class="panel-body">
+						<div th:if="not ${sessao.finalizado}"class="col-md-4" th:each="quadro : ${divisor.quadros}">
 							<ul class="list-group">
 								<li class="list-group-item active">
 										<label th:text="${quadro.nome}"></label>
-								<a th:href="@{/ideias/new?id_no={id}(id = ${quadro.id})}" class="btn btn-success">+</a>
+								<a th:href="@{/ideias/new?id_no={id}(id = ${quadro.id})}" class="btn btn-success pull-right">+</a>
 								</li>
 								<li class="list-group-item" th:each="ideia : ${quadro.ideias}">
 										<a th:text="${ideia.titulo}" th:href="@{/ideias/{id}(id = ${ideia.id})}"></a>
 								</li>
 							</ul>
 						</div>
+						<div th:if="${sessao.finalizado}" class="col" th:each="ideia : ${sessao.solucao}">
+							<div class="panel panel-info">
+							  <div class="panel-heading">
+							    <h3 class="panel-title" th:text="${ideia.titulo}">Panel title</h3>
+							  </div>
+							  <div class="panel-body">
+							    <p class="card-text" th:text="${ideia.descricao}"></p>
+							  </div>
+							</div>
+						</div>	
 					</div>
 				</div>
+				
 			</div>
 		</div>
 	</body>
