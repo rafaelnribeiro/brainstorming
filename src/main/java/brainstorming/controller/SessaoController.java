@@ -22,12 +22,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import brainstorming.controller.estrutura_factory.DivisorFactory;
 import brainstorming.controller.estrutura_factory.EstruturaFactory;
+import brainstorming.controller.estrutura_factory.MindmappingFactory;
+import brainstorming.controller.estrutura_factory.StoryboardFactory;
 import brainstorming.model.Grupo;
 import brainstorming.model.Sessao;
 import brainstorming.model.Solicitacao;
 import brainstorming.model.User;
 import brainstorming.model.estrutura.Divisor;
 import brainstorming.model.estrutura.Estrutura;
+import brainstorming.model.estrutura.Mindmapping;
+import brainstorming.model.estrutura.Storyboard;
 import brainstorming.service.GrupoService;
 import brainstorming.service.SessaoService;
 import brainstorming.service.SolicitacaoService;
@@ -40,6 +44,8 @@ import brainstorming.util.exceptions.BusinessException;
 @RequestMapping("/sessoes")
 public class SessaoController {
 	EstruturaFactory eFactory = new DivisorFactory();
+	//EstruturaFactory eFactory = new StoryboardFactory();	
+	//EstruturaFactory eFactory = new MindmappingFactory();
 	
 	@Autowired SessaoService sessaoService;
 	
@@ -62,8 +68,17 @@ public class SessaoController {
 		//Parte específica de Divisor
 		Divisor divisor = (Divisor)sessao.getEstrutura();
 		model.addAttribute("divisor", divisor);
-		
 		pagina_retorno = "sessao/show";
+		
+		//Parte específica de Mindmapping
+		//Mindmapping mindMap = (Mindmapping)sessao.getEstrutura();
+		//model.addAttribute("mindmap", mindMap);
+		//pagina_retorno = "sessao/showMindMapping";
+		
+		//Parte específica de StoryBoard
+		//Storyboard storyboard = (Storyboard)sessao.getEstrutura();
+		//model.addAttribute("storyboard", storyboard);
+		//pagina_retorno = "sessao/showStoryBoard";
 		
 		return pagina_retorno;
 	}

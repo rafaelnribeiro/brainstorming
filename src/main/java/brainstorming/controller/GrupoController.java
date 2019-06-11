@@ -1,6 +1,7 @@
 package brainstorming.controller;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -142,6 +143,7 @@ public class GrupoController {
 		User user = userService.findByEmail(principal.getName());
 		boolean ehAdmin = grupo.getAdministrador().getId().equals(user.getId());
 		List<Participacao> participacoes = grupo.getParticipacoes();
+		Collections.sort(participacoes);
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("participacoes", participacoes);
 		model.addAttribute("ehAdmin", ehAdmin);

@@ -12,5 +12,5 @@ public class Conceito extends No{	private static final long serialVersionUID = 
 	private List<Conceito> filhos;
 	
 	@OneToOne(mappedBy = "raiz")
-	private Mindmapping mindmapping;	public Conceito getPai() {		return pai;	}	public void setPai(Conceito pai) {		this.pai = pai;	}	public List<Conceito> getFilhos() {		return filhos;	}	public void setFilhos(List<Conceito> filhos) {		this.filhos = filhos;	}	public Mindmapping getMindmapping() {		return mindmapping;	}	public void setMindmapping(Mindmapping mindmapping) {		this.mindmapping = mindmapping;	}	@Override	public Estrutura getEstrutura() {		// TODO Auto-generated method stub		return null;	}
+	private Mindmapping mindmapping;	public Conceito getPai() {		return pai;	}	public void setPai(Conceito pai) {		this.pai = pai;	}	public List<Conceito> getFilhos() {		return filhos;	}	public void setFilhos(List<Conceito> filhos) {		this.filhos = filhos;	}	public Mindmapping getMindmapping() {		return mindmapping;	}	public void setMindmapping(Mindmapping mindmapping) {		this.mindmapping = mindmapping;	}
 }

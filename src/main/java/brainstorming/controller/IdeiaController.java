@@ -23,11 +23,9 @@ import brainstorming.model.Sessao;
 import brainstorming.model.Sugestao;
 import brainstorming.model.User;
 import brainstorming.model.estrutura.No;
-import brainstorming.model.estrutura.Quadro;
 import brainstorming.model.Comentario;
 import brainstorming.service.IdeiaService;
 import brainstorming.service.NoService;
-import brainstorming.service.SessaoService;
 import brainstorming.service.SugestaoService;
 import brainstorming.service.UserService;
 import brainstorming.service.ComentarioService;
@@ -39,9 +37,6 @@ public class IdeiaController {
 
 	@Autowired
 	private IdeiaService ideiaService;
-	
-	@Autowired
-	private SessaoService sessaoService;
 	
 	@Autowired
 	private UserService userService;
