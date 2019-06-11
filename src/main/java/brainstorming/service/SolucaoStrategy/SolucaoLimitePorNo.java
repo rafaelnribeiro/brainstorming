@@ -15,6 +15,7 @@ public class SolucaoLimitePorNo implements SolucaoStrategy{
 		
 		// Valor definido pelo ADM
 		int numSolporNo = 3;
+		int qtd_sol = 6;
 		List<Ideia> sol = new ArrayList<Ideia>();
 		List<Ideia> aux = new ArrayList<Ideia>();
 		
@@ -30,9 +31,15 @@ public class SolucaoLimitePorNo implements SolucaoStrategy{
 			}
 			
 			aux.clear();
-			numSolporNo = 3;
+					
 		}
+		// qtd_ideia = 3*qtd_no
+		Collections.sort(sol);
 		
+		if(sol.size() > qtd_sol) {
+			sol = sol.subList(0, qtd_sol);
+		}
+			
 		return sol;
 		
 	}

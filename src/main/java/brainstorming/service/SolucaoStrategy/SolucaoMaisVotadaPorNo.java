@@ -27,7 +27,7 @@ public class SolucaoMaisVotadaPorNo implements SolucaoStrategy{
 				}
 				
 				aux.clear();
-				numSolporNo = 2;
+				
 			}
 			
 			return sol;
