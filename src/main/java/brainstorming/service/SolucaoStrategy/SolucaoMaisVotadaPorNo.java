@@ -19,7 +19,7 @@ public class SolucaoMaisVotadaPorNo implements SolucaoStrategy{
 				aux.addAll(no.getIdeias());
 				
 				Collections.sort(aux);
-				
+			
 				if(aux.size() > numSolporNo) {
 					sol.addAll(aux.subList(0, numSolporNo));
 				}else {
