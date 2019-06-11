@@ -1,33 +1,47 @@
 package brainstorming.controller.estrutura_factory;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import brainstorming.model.estrutura.Estrutura;
+import brainstorming.model.estrutura.No;
+import brainstorming.model.estrutura.Quadro;
 import brainstorming.model.estrutura.Step;
 import brainstorming.model.estrutura.Storyboard;
 
 public class StoryboardFactory implements EstruturaFactory {
 
-	public Estrutura create(MultipartFile f) {
-		// TODO Temporario
-		Storyboard e = new Storyboard();
-		Step s1 = new Step();
-		Step s2 = new Step();
-		Step s3 = new Step();
-		Step s4 = new Step();
-		e.setFirst(s1);
-		s1.setStoryboard(e);
-		s1.setNome("Passo 1");
-		s1.setRight(s2);
-		s2.setNome("Passo 2");
-		s2.setLeft(s1);
-		s2.setRight(s3);
-		s3.setNome("Passo 3");
-		s3.setLeft(s2);
-		s3.setRight(s4);
-		s4.setNome("Passo 4");
-		s4.setLeft(s3);
-		return e;
+	public Estrutura create(MultipartFile f) throws IOException {
+		Storyboard storyBoard = new Storyboard();
+		storyBoard.setNos(new ArrayList<No>());
+		Step current, next;
+		
+		Scanner sc = new Scanner(f.getInputStream());
+		
+		if(sc.hasNextLine()) {
+			current = new Step();
+			current.setNome(sc.nextLine());
+			current.setStoryboard(storyBoard);
+			current.setEstrutura(storyBoard);
+			storyBoard.setFirst(current);
+			storyBoard.getNos().add(current);
+			
+			while(sc.hasNextLine()) {
+				next = new Step();
+				next.setNome(sc.nextLine());
+				next.setLeft(current);
+				current.setRight(next);
+				next.setEstrutura(storyBoard);
+				storyBoard.getNos().add(next);
+				current = next;
+			}
+		}		
+		sc.close();
+		
+		return storyBoard;
 	}
 
 }

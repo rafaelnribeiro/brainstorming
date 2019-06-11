@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @IdClass(ParticipacaoID.class)
 @Table(name = "participacao")
-public class Participacao implements Serializable{
+public class Participacao implements Serializable, Comparable<Participacao>{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -51,5 +51,9 @@ public class Participacao implements Serializable{
 
 	public void setPontos(int pontos) {
 		this.pontos = pontos;
+	}
+
+	public int compareTo(Participacao p) {
+		return p.getPontos() - this.pontos;
 	}
 }

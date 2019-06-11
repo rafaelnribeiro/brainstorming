@@ -15,7 +15,7 @@ public class Mindmapping extends Estrutura{
 	public Conceito getRaiz() {
 		return raiz;
 	}
-
+	
 	public void setRaiz(Conceito raiz) {
 		this.raiz = raiz;
 	}

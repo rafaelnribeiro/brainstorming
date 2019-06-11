@@ -12,8 +12,11 @@ import brainstorming.model.Participacao;
 import brainstorming.model.Sessao;
 import brainstorming.repository.ParticipacaoRepository;
 import brainstorming.repository.SessaoRepository;
+import brainstorming.service.SolucaoStrategy.SolucaoLimitePorNo;
 import brainstorming.service.SolucaoStrategy.SolucaoMaisVotada;
+import brainstorming.service.SolucaoStrategy.SolucaoMaisVotadaPorNo;
 import brainstorming.service.SolucaoStrategy.SolucaoStrategy;
+import brainstorming.service.rankingStrategy.RankingQualitative;
 import brainstorming.service.rankingStrategy.RankingQuantitative;
 import brainstorming.service.rankingStrategy.RankingStrategy;
 import brainstorming.util.exceptions.BusinessException;
@@ -22,7 +25,11 @@ import brainstorming.util.exceptions.BusinessException;
 @Transactional(readOnly = true)
 public class SessaoService {
 	RankingStrategy rankingStrategy = new RankingQuantitative();
+	//RankingStrategy rankingStrategy = new RankingQualitative();
+		
 	SolucaoStrategy solucaoStrategy = new SolucaoMaisVotada();
+	//SolucaoStrategy solucaoStrategy = new SolucaoMaisVotadaPorNo();
+	//SolucaoStrategy solucaoStrategy = new SolucaoLimitePorNo();
 
 	@Autowired
 	private SessaoRepository sessaoRepository;
