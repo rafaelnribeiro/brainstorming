@@ -21,8 +21,10 @@ public class RankingQuantitative implements RankingStrategy {
 				if(c.getIdeia().getNo().getEstrutura().getSessao().getId().equals(sessao.getId()))
 					pontuacao = pontuacao + pComentario;
 			}
+			
 			p.setPontos(pontuacao);
 		}
+		
 	}
 
 }

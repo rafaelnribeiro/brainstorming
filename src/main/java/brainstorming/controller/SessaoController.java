@@ -68,7 +68,7 @@ public class SessaoController {
 		//Parte específica de Divisor
 		Divisor divisor = (Divisor)sessao.getEstrutura();
 		model.addAttribute("divisor", divisor);
-		pagina_retorno = "sessao/show";
+		pagina_retorno = "sessao/showQuadros";
 		
 		//Parte específica de Mindmapping
 		//Mindmapping mindMap = (Mindmapping)sessao.getEstrutura();

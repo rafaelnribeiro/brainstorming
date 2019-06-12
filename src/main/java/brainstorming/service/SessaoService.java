@@ -27,8 +27,8 @@ public class SessaoService {
 	RankingStrategy rankingStrategy = new RankingQuantitative();
 	//RankingStrategy rankingStrategy = new RankingQualitative();
 		
-	SolucaoStrategy solucaoStrategy = new SolucaoMaisVotada();
-	//SolucaoStrategy solucaoStrategy = new SolucaoMaisVotadaPorNo();
+	//SolucaoStrategy solucaoStrategy = new SolucaoMaisVotada();
+	SolucaoStrategy solucaoStrategy = new SolucaoMaisVotadaPorNo();
 	//SolucaoStrategy solucaoStrategy = new SolucaoLimitePorNo();
 
 	@Autowired
