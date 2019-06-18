@@ -4,11 +4,22 @@ INSERT INTO user VALUES (1, 1, 'felipe@gmail.com', 'Felipe da Silva', '123456');
 INSERT INTO user VALUES (2, 1, 'maria@gmail.com', 'Maria da Silva', '123456');
 INSERT INTO user VALUES (3, 1, 'joaquim@gmail.com', 'Joaquim da Costa', '123456');
 INSERT INTO user VALUES (4, 1, 'fernanda@gmail.com', 'Fernanda da Costa', '123456');
+INSERT INTO user VALUES (5, 1, 'luiz@gmail.com', 'Luiz Silva', '123456');
+INSERT INTO user VALUES (6, 1, 'carlos@hotmail.com', 'Carlos da Costa', '123456');
+INSERT INTO user VALUES (7, 1, 'clara@hotmail.com', 'Clara dos Santos', '123456');
+INSERT INTO user VALUES (8, 1, 'andre@gmail.com', 'Andre Ferreira', '123456');
+INSERT INTO user VALUES (9, 1, 'ana@gmail.com', 'Ana Costa', '123456');
+
 
 INSERT INTO user_role VALUES (1,1);
 INSERT INTO user_role VALUES (2,1);
 INSERT INTO user_role VALUES (3,1);
 INSERT INTO user_role VALUES (4,1);
+INSERT INTO user_role VALUES (5,1);
+INSERT INTO user_role VALUES (6,1);
+INSERT INTO user_role VALUES (7,1);
+INSERT INTO user_role VALUES (8,1);
+INSERT INTO user_role VALUES (9,1);
 --
 --INSERT INTO grupo VALUES (1, 'Equipe de marketing da doli', 1);
 --INSERT INTO participante_grupo VALUES (1, 2);

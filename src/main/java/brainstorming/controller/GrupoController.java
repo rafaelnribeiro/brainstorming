@@ -80,7 +80,7 @@ public class GrupoController {
 		String pagina_retorno;
 		Grupo grupo = grupoService.findOne(id).get();
 		grupoService.delete(grupo);
-		redirectAttributes.addFlashAttribute("success", "Grupo removico com sucesso");
+		redirectAttributes.addFlashAttribute("success", "Grupo removido com sucesso");
 		pagina_retorno = "redirect:/grupos";
 		
 		return pagina_retorno;

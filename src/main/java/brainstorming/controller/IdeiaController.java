@@ -76,6 +76,7 @@ public class IdeiaController {
 						@RequestParam("id_no") Integer id_no, Principal principal,
 						BindingResult result, RedirectAttributes redirectAttributes) {		
 		String pagina_retorno;
+		
 		No no = noService.findOne(id_no).get();
 		User user = userService.findByEmail(principal.getName());
 		entityIdeia.setNo(no);
@@ -83,8 +84,9 @@ public class IdeiaController {
 		Ideia ideia;
 		try {
 			ideia = ideiaService.save(entityIdeia);
-			redirectAttributes.addFlashAttribute("success", "Ideia criada com sucesso");
-			pagina_retorno = "redirect:/ideias/" + ideia.getId();
+			Sessao sessao = ideia.getNo().getEstrutura().getSessao();
+			redirectAttributes.addFlashAttribute("success", "Ideia criada com sucesso");			
+			pagina_retorno = "redirect:/sessoes/" + sessao.getId() + "/show";
 		} catch (BusinessException e) {
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
 			pagina_retorno = "redirect:/ideias/new?id_no=" + id_no;

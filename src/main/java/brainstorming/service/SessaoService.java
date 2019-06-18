@@ -24,12 +24,12 @@ import brainstorming.util.exceptions.BusinessException;
 @Service
 @Transactional(readOnly = true)
 public class SessaoService {
-	RankingStrategy rankingStrategy = new RankingQuantitative();
-	//RankingStrategy rankingStrategy = new RankingQualitative();
+	//RankingStrategy rankingStrategy = new RankingQuantitative();
+	RankingStrategy rankingStrategy = new RankingQualitative();
 		
 	//SolucaoStrategy solucaoStrategy = new SolucaoMaisVotada();
-	SolucaoStrategy solucaoStrategy = new SolucaoMaisVotadaPorNo();
-	//SolucaoStrategy solucaoStrategy = new SolucaoLimitePorNo();
+	//SolucaoStrategy solucaoStrategy = new SolucaoMaisVotadaPorNo();
+	SolucaoStrategy solucaoStrategy = new SolucaoLimitePorNo();
 
 	@Autowired
 	private SessaoRepository sessaoRepository;

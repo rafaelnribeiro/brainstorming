@@ -22,7 +22,7 @@ public class SolucaoMaisVotada implements SolucaoStrategy{
 		Collections.sort(aux);
 		
 		if(aux.size() > numSol) {
-			sol.addAll(aux.subList(0, numSol -1));
+			sol.addAll(aux.subList(0, numSol));
 		}else {
 			sol.addAll(aux);
 		}

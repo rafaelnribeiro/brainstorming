@@ -43,9 +43,9 @@ import brainstorming.util.exceptions.BusinessException;
 @Controller
 @RequestMapping("/sessoes")
 public class SessaoController {
-	EstruturaFactory eFactory = new DivisorFactory();
+	//EstruturaFactory eFactory = new DivisorFactory();
 	//EstruturaFactory eFactory = new StoryboardFactory();	
-	//EstruturaFactory eFactory = new MindmappingFactory();
+	EstruturaFactory eFactory = new MindmappingFactory();
 	
 	@Autowired SessaoService sessaoService;
 	
@@ -66,14 +66,14 @@ public class SessaoController {
 		model.addAttribute("sessao", sessao);
 		
 		//Parte específica de Divisor
-		Divisor divisor = (Divisor)sessao.getEstrutura();
-		model.addAttribute("divisor", divisor);
-		pagina_retorno = "sessao/showQuadros";
+		//Divisor divisor = (Divisor)sessao.getEstrutura();
+		//model.addAttribute("divisor", divisor);
+		//pagina_retorno = "sessao/showQuadros";
 		
 		//Parte específica de Mindmapping
-		//Mindmapping mindMap = (Mindmapping)sessao.getEstrutura();
-		//model.addAttribute("mindmap", mindMap);
-		//pagina_retorno = "sessao/showMindMapping";
+		Mindmapping mindMap = (Mindmapping)sessao.getEstrutura();
+		model.addAttribute("mindmap", mindMap);
+		pagina_retorno = "sessao/showMindMapping";
 		
 		//Parte específica de StoryBoard
 		//Storyboard storyboard = (Storyboard)sessao.getEstrutura();
